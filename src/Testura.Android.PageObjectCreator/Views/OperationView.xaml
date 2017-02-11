@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="Testura.Android.PageObjectCreator.Views.OperationView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300"
+      DataContext="{Binding Source={StaticResource Locator}, Path=OperationViewModel}">
+
+    <Grid Background="{StaticResource ViewBackgroundColorBrush}">
+        <StackPanel Grid.Column="0">
+            <Label Content="Operations"
+                   Foreground="White"
+                   Background="{StaticResource WindowTitleColorBrush}"
+                   Margin="0, 0, 0, 10"/>
+            <Border BorderBrush="#dddddd"
+                    BorderThickness="1,1,1,1"
+                    Margin="10, 0, 10, 0"
+                    VerticalAlignment="Center"
+                    IsEnabled="{Binding IsDeviceAvailable}">
+                <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30" />
+                        <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                    <Button Width="25"
+                            Height="25"
+                            Command="{Binding DumpCommand}"
+                            Foreground="{StaticResource BlackBrush}"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            BorderThickness="0"
+                            Padding="-4"
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            IsEnabled="{Binding IsDumpingScreen, Converter={StaticResource InvertBoolConverter}}">
+                        <Rectangle Width="10"
+                                   Height="10"
+                                   Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Fill"
+                                             Visual="{DynamicResource appbar_control_play}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Padding"
+                                        Value="0" />
+                                <Setter Property="Margin"
+                                        Value="0" />
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </Grid>
+                </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>
