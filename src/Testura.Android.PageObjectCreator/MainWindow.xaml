@@ -67,14 +67,29 @@
                        Margin="0, 0, 0, 10"
                        Grid.Row="0"
                        Grid.Column="0" />
-                <TabControl Grid.Row="1" Margin="5, 0, 5, 0">
+                <TabControl Grid.Row="1" Margin="5, 0, 5, 0" Visibility="{Binding IsEditEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <TabItem Header="Page object">
                         <views:PageObjectView />
+                    </TabItem>
+                    <TabItem Header="Hierarchy">
+                        <views:HierarchyView />
                     </TabItem>
                     <TabItem Header="Code">
                         <views:CodeView />
                     </TabItem>
                 </TabControl>
+                <Grid Background="{StaticResource WindowTitleColorBrush}" Height="70" Margin="10, 20, 10, 10" VerticalAlignment="Top" Grid.Row="1" Visibility="{Binding IsEditEnabled, Converter={StaticResource BooleanToVisibilityInvertedConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.2*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Rectangle Height="20" Width="20" Grid.Column="0" Fill="White">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Visual="{StaticResource appbar_information_circle}" Stretch="Fill" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Text="Hello! Start by plugging in your android device and clicking on the dump button to the left at operations." TextWrapping="Wrap" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0" Padding="10" Grid.Column="1" />
+                </Grid>
             </Grid>
         </Grid>
     </Grid>

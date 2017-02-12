@@ -25,6 +25,11 @@ namespace Testura.Android.PageObjectCreator.Services
             var devices = output.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             for (int i = 1; i < devices.Length; i++)
             {
+                if (devices[i].Contains("daemon"))
+                {
+                    continue;
+                }
+
                 serials.Add(devices[i].Split('\t').First());
             }
 

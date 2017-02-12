@@ -139,6 +139,7 @@
     </Compile>
     <Compile Include="Models\AndroidDumpInfo.cs" />
     <Compile Include="Models\AndroidElement.cs" />
+    <Compile Include="Models\Attribute.cs" />
     <Compile Include="Models\Messages\DeviceAvailableMessage.cs" />
     <Compile Include="Models\Messages\PageObjectChangedMessage.cs" />
     <Compile Include="Models\Messages\RequestDumpMessage.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="Services\IScreenService.cs" />
     <Compile Include="Services\ScreenService.cs" />
     <Compile Include="Util\Behaviors\AvalonEditBehavior.cs" />
+    <Compile Include="Util\Converters\BooleanToVisibilityInvertedConverter.cs" />
     <Compile Include="Util\Converters\InvertBooleanConverter.cs" />
     <Compile Include="Util\ITerminal.cs" />
     <Compile Include="Util\Terminal.cs" />
@@ -172,6 +174,7 @@
     <Compile Include="ViewModels\ScreenViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="ViewModels\WithViewModel.cs" />
+    <Compile Include="ViewModels\HierarchyViewModel.cs" />
     <Compile Include="Views\CodeView.xaml.cs">
       <DependentUpon>CodeView.xaml</DependentUpon>
     </Compile>
@@ -186,6 +189,9 @@
     </Compile>
     <Compile Include="Views\ScreenView.xaml.cs">
       <DependentUpon>ScreenView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HierarchyView.xaml.cs">
+      <DependentUpon>HierarchyView.xaml</DependentUpon>
     </Compile>
     <Page Include="Dialogs\ErrorDialog.xaml">
       <SubType>Designer</SubType>
@@ -300,6 +306,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ScreenView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\HierarchyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

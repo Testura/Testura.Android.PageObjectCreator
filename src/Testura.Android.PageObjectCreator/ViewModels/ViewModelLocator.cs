@@ -23,6 +23,7 @@ namespace Testura.Android.PageObjectCreator.ViewModels
             SimpleIoc.Default.Register<ScreenViewModel>();
             SimpleIoc.Default.Register<CodeViewModel>();
             SimpleIoc.Default.Register<WithViewModel>();
+            SimpleIoc.Default.Register<HierarchyViewModel>();
 
             // Services and utilities
             SimpleIoc.Default.Register<ITerminal, Terminal>();
@@ -46,5 +47,7 @@ namespace Testura.Android.PageObjectCreator.ViewModels
         public CodeViewModel CodeViewModel => ServiceLocator.Current.GetInstance<CodeViewModel>();
 
         public WithViewModel WithViewModel => ServiceLocator.Current.GetInstance<WithViewModel>();
+
+        public HierarchyViewModel XmlViewModel => ServiceLocator.Current.GetInstance<HierarchyViewModel>();
     }
 }

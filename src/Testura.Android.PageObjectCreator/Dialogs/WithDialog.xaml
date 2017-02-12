@@ -80,32 +80,29 @@
                     </Border>
                 </Grid>
             </TabItem>
-            <TabItem Header="Node values">
-                <Grid Margin="0, 5, 0, 0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30" />
-                        <RowDefinition Height="30" />
-                        <RowDefinition Height="30" />
-                        <RowDefinition Height="30" />
-                        <RowDefinition Height="30" />
-                        <RowDefinition Height="30" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Label Content="Text: " Grid.Row="0" Grid.Column="0" Background="{StaticResource WindowTitleColorBrush}" Foreground="White" Margin="0, 5, 0, 0" />
-                    <Label Content="{Binding UiObjectInfo.AndroidElement.Text}" Grid.Row="0" Grid.Column="1" Margin="0, 5, 0, 0"  />
-                    <Label Content="Resource-id: " Grid.Row="1" Grid.Column="0" Background="{StaticResource WindowTitleColorBrush}" Foreground="White" Margin="0, 5, 0, 0" />
-                    <Label Content="{Binding UiObjectInfo.AndroidElement.ResourceId}" Grid.Row="1" Grid.Column="1" Margin="0, 5, 0, 0" />
-                    <Label Content="ContentDesc: " Grid.Row="2" Grid.Column="0" Background="{StaticResource WindowTitleColorBrush}" Foreground="White" Margin="0, 5, 0, 0" />
-                    <Label Content="{Binding UiObjectInfo.AndroidElement.ContentDesc}" Grid.Row="2" Grid.Column="1" Margin="0, 5, 0, 0"  />
-                    <Label Content="Index: " Grid.Row="3" Grid.Column="0" Background="{StaticResource WindowTitleColorBrush}" Foreground="White" Margin="0, 5, 0, 0" />
-                    <Label Content="{Binding UiObjectInfo.AndroidElement.Index}" Grid.Row="3" Grid.Column="1" Margin="0, 5, 0, 0" />
-                    <Label Content="Class: " Grid.Row="4" Grid.Column="0" Background="{StaticResource WindowTitleColorBrush}" Foreground="White" Margin="0, 5, 0, 0" />
-                    <Label Content="{Binding UiObjectInfo.AndroidElement.Class}" Grid.Row="4" Grid.Column="1" Margin="0, 5, 0, 0" />
-
-                </Grid>
+            <TabItem Header="Node details">
+                <DataGrid x:Name="MetroDataGrid"
+                      RenderOptions.ClearTypeHint="Enabled"
+                      TextOptions.TextFormattingMode="Display"
+                      HeadersVisibility="All"
+                      Margin="10"
+                      ItemsSource="{Binding Attributes}"
+                      AutoGenerateColumns="False"
+                      CanUserSortColumns="False"
+                      MinHeight="300"
+                      CanUserAddRows="False"
+                      IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Attribute"
+                                        Binding="{Binding Name}"
+                                        Width="*"
+                                        />
+                        <DataGridTextColumn Header="Value"
+                                        Binding="{Binding Value}"
+                                        Width="*"
+                                        IsReadOnly="True"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </TabItem>
         </TabControl>
         <StackPanel Margin="10, 10, 0, 10"

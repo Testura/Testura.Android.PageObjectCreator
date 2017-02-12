@@ -1,0 +1,69 @@
+﻿<UserControl x:Class="Testura.Android.PageObjectCreator.Views.HierarchyView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Testura.Android.PageObjectCreator.Views"
+             xmlns:models="clr-namespace:Testura.Android.PageObjectCreator.Models"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             DataContext="{Binding Source={StaticResource Locator}, Path=XmlViewModel}"
+             x:Name="root">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="45" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label Content="Hierarchy"
+               Foreground="White"
+               Background="{StaticResource WindowTitleColorBrush}"
+               Margin="10, 10, 10, 10"
+               Grid.Row="0"
+               Grid.Column="0" />
+        <TreeView ItemsSource="{Binding DataContext.AndroidElements, ElementName=root}" Grid.Row="1" Margin="10, 0, 0, 0" x:Name="Nodes">
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type models:AndroidElement}" ItemsSource="{Binding Children}">
+                    <TextBlock Text="{Binding Path=DisplayName}" />
+                </HierarchicalDataTemplate>
+            </TreeView.Resources>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectedItemChanged">
+                    <i:InvokeCommandAction Command="{Binding DataContext.SelectedItemChangedCommand, ElementName=root}" CommandParameter="{Binding SelectedItem, ElementName=Nodes}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </TreeView>
+        <Label Content="Node details"
+               Foreground="White"
+               Background="{StaticResource WindowTitleColorBrush}"
+               Margin="10, 10, 10, 10"
+               Grid.Row="2"
+               Grid.Column="0" />
+        <Grid Grid.Row="3">
+            <DataGrid x:Name="MetroDataGrid"
+                      RenderOptions.ClearTypeHint="Enabled"
+                      TextOptions.TextFormattingMode="Display"
+                      HeadersVisibility="All"
+                      Margin="10"
+                      ItemsSource="{Binding Attributes}"
+                      AutoGenerateColumns="False"
+                      CanUserSortColumns="False"
+                      MinHeight="300"
+                      CanUserAddRows="False"
+                      IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Attribute"
+                                        Binding="{Binding Name}"
+                                        Width="*"
+                                        />
+                    <DataGridTextColumn Header="Value"
+                                        Binding="{Binding Value}"
+                                        Width="*"
+                                        IsReadOnly="True"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</UserControl>

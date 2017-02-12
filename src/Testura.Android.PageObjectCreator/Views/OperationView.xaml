@@ -50,6 +50,9 @@
                                         Value="0" />
                             </Style>
                         </Button.Style>
+                        <Button.ToolTip>
+                            <Label Content="Dump the screen" />
+                        </Button.ToolTip>
                     </Button>
                 </Grid>
                 </Border>

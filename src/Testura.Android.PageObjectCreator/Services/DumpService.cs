@@ -82,6 +82,35 @@ namespace Testura.Android.PageObjectCreator.Services
             return nodes;
         }
 
+        /// <summary>
+        /// Parse an xml dump
+        /// </summary>
+        /// <param name="dump">The xml dump</param>
+        /// <returns>All parsed android elements</returns>
+        public IList<AndroidElement> ParseDumpSimple(string dump)
+        {
+            var document = XDocument.Parse(dump);
+
+            var nodes = new List<AndroidElement>();
+
+            var currentNode = document.Root;
+            var androidElement = new AndroidElement(currentNode.Element("node") ,null);
+            DoStuff(currentNode.Element("node"), androidElement);
+
+            return new List<AndroidElement> {androidElement};
+        }
+
+        private void DoStuff(XElement element, AndroidElement androidElement)
+        {
+            var childEelements = element.Elements();
+            foreach (var child in childEelements)
+            {
+                var childAndroidElement = new AndroidElement(child, androidElement);
+                DoStuff(child, childAndroidElement);
+                androidElement.Children.Add(childAndroidElement);
+            }
+        }
+
         private string DumpScreen(string serial)
         {
             var savePath = Path.Combine(AssemblyDirectory, "dump.xml");

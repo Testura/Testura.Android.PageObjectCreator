@@ -4,6 +4,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using PropertyChanged;
 using Testura.Android.PageObjectCreator.Models;
 using Testura.Android.Util;
+using Attribute = Testura.Android.PageObjectCreator.Models.Attribute;
 
 namespace Testura.Android.PageObjectCreator.ViewModels
 {
@@ -18,6 +19,7 @@ namespace Testura.Android.PageObjectCreator.ViewModels
             RemoveCommand = new RelayCommand<AttributeTags>(RemoveWith);
             OkCommand = new RelayCommand(Save);
             CancelCommand = new RelayCommand(Close);
+            Attributes = new ObservableCollection<Attribute>();
         }
 
         public event EventHandler CloseWindow;
@@ -36,12 +38,26 @@ namespace Testura.Android.PageObjectCreator.ViewModels
 
         public UiObjectInfo UiObjectInfo { get; set; }
 
+        public ObservableCollection<Attribute> Attributes { get; set; }
+
         public void SetCurrentUiObjectInfo(UiObjectInfo uiObjectInfo)
         {
             UiObjectInfo = uiObjectInfo;
             NotUsedWiths.Clear();
             UsedWiths.Clear();
             LoadWiths();
+            LoadAttributes();
+        }
+
+        private void LoadAttributes()
+        {
+            Attributes.Clear();
+            Attributes.Add(new Attribute("Index", UiObjectInfo.AndroidElement.Index));
+            Attributes.Add(new Attribute("Text", UiObjectInfo.AndroidElement.Text));
+            Attributes.Add(new Attribute("Resource-id", UiObjectInfo.AndroidElement.ResourceId));
+            Attributes.Add(new Attribute("Class", UiObjectInfo.AndroidElement.Class));
+            Attributes.Add(new Attribute("Package", UiObjectInfo.AndroidElement.Package));
+            Attributes.Add(new Attribute("Content-desc", UiObjectInfo.AndroidElement.ContentDesc));
         }
 
         private void LoadWiths()
@@ -104,6 +120,7 @@ namespace Testura.Android.PageObjectCreator.ViewModels
             UiObjectInfo.FindWithString = string.Join(", ", UiObjectInfo.FindWith);
             Close();
         }
+
 
         private void Close()
         {

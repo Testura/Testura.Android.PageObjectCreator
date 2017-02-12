@@ -23,6 +23,17 @@ namespace Testura.Android.PageObjectCreator.Models
             Class = element.Attribute("class")?.Value;
             Index = element.Attribute("index")?.Value;
             Package = element.Attribute("package")?.Value;
+            Checkable = element.Attribute("checkable")?.Value;
+            Checked = element.Attribute("checked")?.Value;
+            Clickable = element.Attribute("clickable")?.Value;
+            Enabled = element.Attribute("enabled")?.Value;
+            Focusable = element.Attribute("focusable")?.Value;
+            Focused = element.Attribute("focused")?.Value;
+            Scrollable = element.Attribute("scrollable")?.Value;
+            LongClickAble = element.Attribute("long-clickable")?.Value;
+            Password = element.Attribute("password")?.Value;
+            Selected = element.Attribute("selected")?.Value;
+            Bounds = element.Attribute("bounds")?.Value;
         }
 
         /// <summary>
@@ -69,6 +80,48 @@ namespace Testura.Android.PageObjectCreator.Models
         /// Gets the package of a node
         /// </summary>
         public string Package { get; }
+
+        public string Checkable { get; set; }
+
+        public string Checked { get; set; }
+
+        public string Clickable { get; set; }
+
+        public string Enabled { get; set; }
+
+        public string Focusable { get; set; }
+
+        public string Focused { get; set; }
+
+        public string Scrollable { get; set; }
+
+        public string LongClickAble { get; set; }
+
+        public string Password { get; set; }
+
+        public string Selected { get; set; }
+
+        public string Bounds { get; set; }
+
+        /// <summary>
+        /// Gets the display name used in gui
+        /// </summary>
+        public string DisplayName
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Text))
+                {
+                    return $"({Index}){Class}: {Text}";
+                }
+                else if (!string.IsNullOrEmpty(ContentDesc))
+                {
+                    return $"({Index}){Class}: {{{ContentDesc}}}";
+                }
+
+                return $"({Index}){Class}";
+            }
+        }
 
         /// <summary>
         /// Get the top left and lower right corner of a element.

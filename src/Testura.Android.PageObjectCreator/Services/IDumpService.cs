@@ -19,5 +19,7 @@ namespace Testura.Android.PageObjectCreator.Services
         /// <param name="dump">The xml dump</param>
         /// <returns>All parsed android elements</returns>
         IList<AndroidElement> ParseDump(string dump);
+
+        IList<AndroidElement> ParseDumpSimple(string dump);
     }
 }
