@@ -19,16 +19,19 @@ namespace Testura.Android.PageObjectCreator.ViewModels
             MessengerInstance.Register<DumpMessage>(this, OnDump);
             MessengerInstance.Register<AddUiObjectInfoMessage>(this, OnAddUiObjectInfo);
             EditWithsCommand = new RelayCommand<UiObjectInfo>(EditWiths);
-            UiInfoChangedCommand = new RelayCommand(OnUiInfoChanged);
+            UiInfoChangedCommand = new RelayCommand(SendPageObjectChanged);
+            DeleteUiObjectInfoCommand = new RelayCommand<UiObjectInfo>(DeleteUiObjectInfo);
             PageObject = new PageObject { Name = "MyClass", Namespace = "MyNamespace" };
             ((INotifyPropertyChanged)PageObject).PropertyChanged += OnPropertyChanged;
         }
 
-        public RelayCommand<UiObjectInfo> EditWithsCommand { get; set; }
-
         public PageObject PageObject { get; set; }
 
+        public RelayCommand<UiObjectInfo> EditWithsCommand { get; set; }
+
         public RelayCommand UiInfoChangedCommand { get; set; }
+
+        public RelayCommand<UiObjectInfo> DeleteUiObjectInfoCommand { get; set; }
 
         private void OnAddUiObjectInfo(AddUiObjectInfoMessage message)
         {
@@ -45,15 +48,21 @@ namespace Testura.Android.PageObjectCreator.ViewModels
         private void EditWiths(UiObjectInfo obj)
         {
             _dialogService.ShowWithDialog(obj);
-            MessengerInstance.Send(new PageObjectChangedMessage { PageObject = PageObject });
+            SendPageObjectChanged();
         }
 
-        private void OnUiInfoChanged()
+        private void DeleteUiObjectInfo(UiObjectInfo uiObjectInfo)
         {
-            MessengerInstance.Send(new PageObjectChangedMessage { PageObject = PageObject });
+            PageObject.UiObjectInfos.Remove(uiObjectInfo);
+            SendPageObjectChanged();
         }
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            SendPageObjectChanged();
+        }
+
+        private void SendPageObjectChanged()
         {
             MessengerInstance.Send(new PageObjectChangedMessage { PageObject = PageObject });
         }

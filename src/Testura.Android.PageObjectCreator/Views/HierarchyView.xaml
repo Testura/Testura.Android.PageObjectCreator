@@ -13,17 +13,117 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="45" />
+            <RowDefinition Height="45" />
             <RowDefinition Height="*" />
             <RowDefinition Height="45" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <Border BorderBrush="#dddddd"
+                    BorderThickness="1,1,1,1"
+                    Margin="10, 10, 10, 0"
+                    VerticalAlignment="Center"
+                    Grid.Row="0">
+        <Grid Margin="5">
+            <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30" />
+                    <ColumnDefinition Width="30" />
+                    <ColumnDefinition Width="30" />
+                    <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Width="25"
+                            Height="25"
+                            Command="{Binding AddCommand}"
+                            Foreground="{StaticResource BlackBrush}"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            BorderThickness="0"
+                            Padding="-4"
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            IsEnabled="{Binding IsDumpingScreen, Converter={StaticResource InvertBoolConverter}}">
+                <Rectangle Width="10"
+                                   Height="10"
+                                   Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill"
+                                             Visual="{DynamicResource appbar_add}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Padding"
+                                        Value="0" />
+                        <Setter Property="Margin"
+                                        Value="0" />
+                    </Style>
+                </Button.Style>
+                <Button.ToolTip>
+                    <Label Content="Add selected element to ui object list" />
+                </Button.ToolTip>
+            </Button>
+                <Button Width="25"
+                            Height="25"
+                            Command="{Binding ExpandAllCommand}"
+                            Foreground="{StaticResource BlackBrush}"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            BorderThickness="0"
+                            Padding="-4"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left">
+                    <Rectangle Width="10"
+                                   Height="10"
+                                   Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill"
+                                             Visual="{DynamicResource appbar_section_expand_all}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Padding"
+                                        Value="0" />
+                            <Setter Property="Margin"
+                                        Value="0" />
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button Width="25"
+                            Height="25"
+                            Command="{Binding ContractAllCommand}"
+                            Foreground="{StaticResource BlackBrush}"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            BorderThickness="0"
+                            Padding="-4"
+                            Grid.Column="2"
+                            HorizontalAlignment="Left">
+                    <Rectangle Width="10"
+                                   Height="10"
+                                   Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill"
+                                             Visual="{DynamicResource appbar_section_contract_all}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Padding"
+                                        Value="0" />
+                            <Setter Property="Margin"
+                                        Value="0" />
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+        </Border>
         <Label Content="Hierarchy"
                Foreground="White"
                Background="{StaticResource WindowTitleColorBrush}"
                Margin="10, 10, 10, 10"
-               Grid.Row="0"
+               Grid.Row="1"
                Grid.Column="0" />
-        <TreeView ItemsSource="{Binding DataContext.AndroidElements, ElementName=root}" Grid.Row="1" Margin="10, 0, 0, 0" x:Name="Nodes">
+        <TreeView ItemsSource="{Binding DataContext.AndroidElements, ElementName=root}" Grid.Row="2" Margin="10, 0, 0, 0" x:Name="Nodes">
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type models:AndroidElement}" ItemsSource="{Binding Children}">
                     <TextBlock Text="{Binding Path=DisplayName}" />
@@ -34,14 +134,19 @@
                     <i:InvokeCommandAction Command="{Binding DataContext.SelectedItemChangedCommand, ElementName=root}" CommandParameter="{Binding SelectedItem, ElementName=Nodes}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="TreeViewItem">
+                    <Setter Property="IsExpanded" Value="{Binding DataContext.IsTreeExpanded, ElementName=root}"/>
+                </Style>
+            </TreeView.ItemContainerStyle>
         </TreeView>
         <Label Content="Node details"
                Foreground="White"
                Background="{StaticResource WindowTitleColorBrush}"
                Margin="10, 10, 10, 10"
-               Grid.Row="2"
+               Grid.Row="3"
                Grid.Column="0" />
-        <Grid Grid.Row="3">
+        <Grid Grid.Row="4">
             <DataGrid x:Name="MetroDataGrid"
                       RenderOptions.ClearTypeHint="Enabled"
                       TextOptions.TextFormattingMode="Display"

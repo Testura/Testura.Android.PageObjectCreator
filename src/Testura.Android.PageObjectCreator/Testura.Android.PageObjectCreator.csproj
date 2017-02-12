@@ -36,6 +36,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
@@ -128,6 +131,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Dialogs\AboutDialog.xaml.cs">
+      <DependentUpon>AboutDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\ErrorDialog.xaml.cs">
       <DependentUpon>ErrorDialog.xaml</DependentUpon>
     </Compile>
@@ -140,11 +146,14 @@
     <Compile Include="Models\AndroidDumpInfo.cs" />
     <Compile Include="Models\AndroidElement.cs" />
     <Compile Include="Models\Attribute.cs" />
+    <Compile Include="Models\ImageScale.cs" />
+    <Compile Include="Models\Messages\AddAndroidElementMessage.cs" />
     <Compile Include="Models\Messages\DeviceAvailableMessage.cs" />
     <Compile Include="Models\Messages\PageObjectChangedMessage.cs" />
     <Compile Include="Models\Messages\RequestDumpMessage.cs" />
     <Compile Include="Models\Messages\RequestRefreshDeviceListCommand.cs" />
     <Compile Include="Models\Messages\SelectedDeviceChangedMessage.cs" />
+    <Compile Include="Models\Messages\SelectedHierarchyNodeMesssage.cs" />
     <Compile Include="Models\Messages\StartedDumpScreenMessage.cs" />
     <Compile Include="Models\Messages\StoppedDumpScreenMessage.cs" />
     <Compile Include="Models\PageObject.cs" />
@@ -193,6 +202,10 @@
     <Compile Include="Views\HierarchyView.xaml.cs">
       <DependentUpon>HierarchyView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Dialogs\AboutDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\ErrorDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -359,6 +372,12 @@
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="favicon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\Testura.Android.0.8.1\build\testura.android.targets" Condition="Exists('..\..\packages\Testura.Android.0.8.1\build\testura.android.targets')" />

@@ -21,5 +21,10 @@ namespace Testura.Android.PageObjectCreator.Services
         /// </summary>
         /// <param name="errorMessage">Error message to show</param>
         void ShowErrorDialog(string errorMessage);
+
+        /// <summary>
+        /// Show the about dialog
+        /// </summary>
+        void ShowAboutDialog();
     }
 }

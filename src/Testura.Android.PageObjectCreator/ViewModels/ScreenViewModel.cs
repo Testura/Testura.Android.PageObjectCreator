@@ -27,7 +27,13 @@ namespace Testura.Android.PageObjectCreator.ViewModels
             MessengerInstance.Register<DumpMessage>(this, OnNewDump);
             MessengerInstance.Register<StartedDumpScreenMessage>(this, OnStartedDumpingScreen);
             MessengerInstance.Register<StoppedDumpScreenMessage>(this, OnStoppedDumpingScreen);
+            MessengerInstance.Register<SelectedHierarchyNodeMesssage>(this, OnSelectedHierarchyNode);
+            MessengerInstance.Register<AddAndroidElementMessage>(this, OnAddAndroidElement);
         }
+
+        public event EventHandler<AndroidElement> NewTemporaryHierarchyNode;
+
+        public event EventHandler<AndroidElement> HierarchyNodeAdded;
 
         public event EventHandler<AndroidDumpInfo> LoadImage;
 
@@ -56,6 +62,14 @@ namespace Testura.Android.PageObjectCreator.ViewModels
             return null;
         }
 
+        private void OnAddAndroidElement(AddAndroidElementMessage message)
+        {
+            if (AddElement(message.AndroidElement))
+            {
+                HierarchyNodeAdded?.Invoke(this, message.AndroidElement);
+            }
+        }
+
         public bool AddElement(AndroidElement element)
         {
             var name = _dialogService.ShowNameDialog();
@@ -80,15 +94,20 @@ namespace Testura.Android.PageObjectCreator.ViewModels
             LoadImage?.Invoke(this, message.DumpInfo);
         }
 
-        private void OnStartedDumpingScreen(StartedDumpScreenMessage obj)
+        private void OnStartedDumpingScreen(StartedDumpScreenMessage message)
         {
             IsDumpingScreen = true;
             ShouldShowInfoMessage = false;
         }
 
-        private void OnStoppedDumpingScreen(StoppedDumpScreenMessage obj)
+        private void OnStoppedDumpingScreen(StoppedDumpScreenMessage messsage)
         {
             IsDumpingScreen = false;
+        }
+
+        private void OnSelectedHierarchyNode(SelectedHierarchyNodeMesssage message)
+        {
+            NewTemporaryHierarchyNode?.Invoke(this, message.SelectedAndroidElement);
         }
     }
 }

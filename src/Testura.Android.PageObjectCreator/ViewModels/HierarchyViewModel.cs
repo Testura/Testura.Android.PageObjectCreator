@@ -1,9 +1,6 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Data;
-using System.Xml;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
 using PropertyChanged;
 using Testura.Android.PageObjectCreator.Models;
 using Testura.Android.PageObjectCreator.Models.Messages;
@@ -16,7 +13,6 @@ namespace Testura.Android.PageObjectCreator.ViewModels
     {
         private readonly IDumpService _dumpService;
         private readonly IFileService _fileService;
-        private AndroidElement _selectedAndroidElement;
 
         public HierarchyViewModel(IDumpService dumpService, IFileService fileService)
         {
@@ -25,14 +21,27 @@ namespace Testura.Android.PageObjectCreator.ViewModels
             AndroidElements = new ObservableCollection<AndroidElement>();
             Attributes = new ObservableCollection<Attribute>();
             SelectedItemChangedCommand = new RelayCommand<AndroidElement>(SelectedItemChanged);
+            AddCommand = new RelayCommand(AddAndroidElement, CanAddAndroidElement);
+            ExpandAllCommand = new RelayCommand(() => IsTreeExpanded = true);
+            ContractAllCommand = new RelayCommand(() => IsTreeExpanded = false);
             MessengerInstance.Register<DumpMessage>(this, OnDump);
         }
+
+        public AndroidElement SelectedAndroidElement { get; set; }
+
+        public bool IsTreeExpanded { get; set; }
 
         public ObservableCollection<AndroidElement> AndroidElements { get; set; }
 
         public ObservableCollection<Attribute> Attributes { get; set; }
 
         public RelayCommand<AndroidElement> SelectedItemChangedCommand { get; set; }
+
+        public RelayCommand AddCommand { get; set; }
+
+        public RelayCommand ExpandAllCommand { get; set; }
+
+        public RelayCommand ContractAllCommand { get; set; }
 
         private void OnDump(DumpMessage message)
         {
@@ -43,25 +52,23 @@ namespace Testura.Android.PageObjectCreator.ViewModels
 
         private void SelectedItemChanged(AndroidElement selectAndroidElement)
         {
-            _selectedAndroidElement = selectAndroidElement;
+            SelectedAndroidElement = selectAndroidElement;
+            MessengerInstance.Send(new SelectedHierarchyNodeMesssage { SelectedAndroidElement = selectAndroidElement });
             Attributes.Clear();
-            foreach (var xAttribute in _selectedAndroidElement.Element.Attributes())
+            foreach (var xAttribute in SelectedAndroidElement.Element.Attributes())
             {
                 Attributes.Add(new Attribute(xAttribute.Name.LocalName, xAttribute.Value));
             }
-            //Attributes.Add(new Attribute("Index", _selectedAndroidElement.Index));
-            //Attributes.Add(new Attribute("Text", _selectedAndroidElement.Text));
-            //Attributes.Add(new Attribute("Resource-id", _selectedAndroidElement.ResourceId));
-            //Attributes.Add(new Attribute("Class", _selectedAndroidElement.Class));
-            //Attributes.Add(new Attribute("Package", _selectedAndroidElement.Package));
-            //Attributes.Add(new Attribute("Content-desc", _selectedAndroidElement.ContentDesc));
-            //Attributes.Add(new Attribute("Checkable", _selectedAndroidElement.Checkable));
-            //Attributes.Add(new Attribute("Checked", _selectedAndroidElement.Checked));
-            //Attributes.Add(new Attribute("Clickable", _selectedAndroidElement.Clickable));
-            //Attributes.Add(new Attribute("Enabled", _selectedAndroidElement.Enabled));
-            //Attributes.Add(new Attribute("Focusable", _selectedAndroidElement.Focusable));
-            //Attributes.Add(new Attribute("Focused", _selectedAndroidElement.Focused));
         }
 
+        private void AddAndroidElement()
+        {
+            MessengerInstance.Send(new AddAndroidElementMessage { AndroidElement = SelectedAndroidElement });
+        }
+
+        private bool CanAddAndroidElement()
+        {
+            return SelectedAndroidElement != null;
+        }
     }
 }

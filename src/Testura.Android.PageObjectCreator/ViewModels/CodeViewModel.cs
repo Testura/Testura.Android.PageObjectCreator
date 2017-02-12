@@ -47,6 +47,7 @@ namespace Testura.Android.PageObjectCreator.ViewModels
             }
 
             var classBuilder = new ClassBuilder(message.PageObject.Name, message.PageObject.Namespace)
+                .WithUsings("Testura.Android.Device", "Testura.Android.Device.Ui.Objects", "Testura.Android.Device.Ui.Search")
                 .WithFields(fields.ToArray())
                 .WithConstructor(ConstructorGenerator.Create(message.PageObject.Name, BodyGenerator.Create(statements.ToArray()), modifiers: new[] { Modifiers.Public }, parameters: new List<Parameter> { new Parameter("device", typeof(IAndroidDevice)) }))
                 .Build();
@@ -65,7 +66,18 @@ namespace Testura.Android.PageObjectCreator.ViewModels
 
             foreach (var with in uiObjectInfo.FindWith)
             {
-                arguments.Add(new ReferenceArgument(new VariableReference("With", new MethodReference(with.ToString(), new[] { new ValueArgument(GetNodeValue(uiObjectInfo, with)) }))));
+                var value = GetNodeValue(uiObjectInfo, with);
+                ValueArgument valueArgument;
+                if (with == AttributeTags.Index)
+                {
+                    valueArgument = new ValueArgument(int.Parse(value));
+                }
+                else
+                {
+                    valueArgument = new ValueArgument(value);
+                }
+
+                arguments.Add(new ReferenceArgument(new VariableReference("With", new MethodReference(with.ToString(), new[] { valueArgument }))));
             }
 
             return arguments;

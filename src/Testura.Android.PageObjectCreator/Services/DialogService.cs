@@ -34,5 +34,14 @@ namespace Testura.Android.PageObjectCreator.Services
             var dialog = new ErrorDialog(errorMessage);
             dialog.ShowDialog();
         }
+
+        /// <summary>
+        /// Show the about dialog
+        /// </summary>
+        public void ShowAboutDialog()
+        {
+           var dialog = new AboutDialog();
+            dialog.ShowDialog();
+        }
     }
 }

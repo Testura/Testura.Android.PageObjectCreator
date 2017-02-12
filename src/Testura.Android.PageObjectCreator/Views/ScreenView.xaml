@@ -31,11 +31,11 @@
                 Height="645">
             <Grid Width="350"
                   Height="625"
-                  Margin="10, 10, 10 10"
+                  Margin="10, 10, 10, 20"
                   VerticalAlignment="Top">
                 <Canvas x:Name="DeviceCanvas"
                         Width="350"
-                        Height="625"
+                        Height="605"
                         MouseMove="DeviceCanvas_OnMouseMove"
                         MouseLeave="DeviceCanvas_OnMouseLeave"
                         Background="#dddddd" />

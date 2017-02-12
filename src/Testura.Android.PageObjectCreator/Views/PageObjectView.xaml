@@ -87,6 +87,9 @@
                       CanUserSortColumns="False"
                       MinHeight="300"
                       CanUserAddRows="False">
+                <DataGrid.InputBindings>
+                    <KeyBinding Key="Delete" Command="{Binding DeleteUiObjectInfoCommand}" CommandParameter="{Binding SelectedItem, ElementName=MetroDataGrid}" />
+                </DataGrid.InputBindings>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="TargetUpdated">
                         <i:InvokeCommandAction Command="{Binding DataContext.UiInfoChangedCommand, ElementName=root}" />
