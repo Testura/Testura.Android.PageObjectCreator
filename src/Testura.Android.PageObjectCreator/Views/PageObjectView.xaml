@@ -65,11 +65,11 @@
             <TextBox Grid.Row="0"
                      Grid.Column="1"
                      Margin="0, 0, 0, 10"
-                     Text="{Binding PageObject.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                     Text="{Binding PageObject.Namespace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <Label Grid.Row="1" Grid.Column="0" Content="Class name: "/>
             <TextBox Grid.Row="1"
                      Grid.Column="1"
-                     Text="{Binding PageObject.Namespace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                     Text="{Binding PageObject.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
         <StackPanel
                     Grid.Row="4">
