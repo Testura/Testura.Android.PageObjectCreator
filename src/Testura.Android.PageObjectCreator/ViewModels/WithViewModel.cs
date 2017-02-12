@@ -121,7 +121,6 @@ namespace Testura.Android.PageObjectCreator.ViewModels
             Close();
         }
 
-
         private void Close()
         {
             CloseWindow?.Invoke(this, new EventArgs());

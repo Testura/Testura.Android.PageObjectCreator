@@ -17,7 +17,7 @@ namespace Testura.Android.PageObjectCreator.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or set the namespace of the page object
+        /// Gets or sets the namespace of the page object
         /// </summary>
         public string Namespace { get; set; }
 

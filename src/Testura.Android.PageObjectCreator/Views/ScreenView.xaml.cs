@@ -25,16 +25,17 @@ namespace Testura.Android.PageObjectCreator.Views
         {
             _savedElements = new List<UIElement>();
             InitializeComponent();
-            ((ScreenViewModel) DataContext).LoadImage += OnLoadImage;
-            ((ScreenViewModel) DataContext).NewTemporaryHierarchyNode += OnNewTemporaryHierarchyNode;
-            ((ScreenViewModel)DataContext).HierarchyNodeAdded += HierarchyNodeAdded;
+            var viewModel = DataContext as ScreenViewModel;
+            viewModel.LoadImage += OnLoadImage;
+            viewModel.NewTemporaryHierarchyNode += OnNewTemporaryHierarchyNode;
+            viewModel.HierarchyNodeAdded += HierarchyNodeAdded;
         }
 
         private void HierarchyNodeAdded(object sender, AndroidElement e)
         {
             _lastTemporaryHierarchyElement.Stroke = new SolidColorBrush(Colors.Red);
             _savedElements.Add(_lastTemporaryHierarchyElement);
-            _lastTemporaryHierarchyElement = null; 
+            _lastTemporaryHierarchyElement = null;
         }
 
         private void OnNewTemporaryHierarchyNode(object sender, AndroidElement element)
@@ -44,6 +45,7 @@ namespace Testura.Android.PageObjectCreator.Views
             {
                 DeviceCanvas.Children.Remove(_lastTemporaryHierarchyElement);
             }
+
             _lastTemporaryHierarchyElement = DeviceCanvas.Children[DeviceCanvas.Children.Count - 1] as Rectangle;
         }
 
@@ -86,7 +88,7 @@ namespace Testura.Android.PageObjectCreator.Views
                     var rect = DeviceCanvas.Children[DeviceCanvas.Children.Count - 1] as System.Windows.Shapes.Rectangle;
                     rect.Stroke = new SolidColorBrush(Colors.Red);
                     _savedElements.Add(rect);
-                    var viewModel = (ScreenViewModel) DataContext;
+                    var viewModel = (ScreenViewModel)DataContext;
                     if (!viewModel.AddElement(element))
                     {
                         _savedElements.Remove(DeviceCanvas.Children[DeviceCanvas.Children.Count - 1]);
@@ -100,10 +102,9 @@ namespace Testura.Android.PageObjectCreator.Views
             var imageScale = GetImageScale();
             var p = Mouse.GetPosition(DeviceCanvas);
 
-            var viewModel = (ScreenViewModel) DataContext;
+            var viewModel = (ScreenViewModel)DataContext;
 
-            var element = viewModel.GetElements(new Point((int) (p.X * imageScale.XScale), (int) (p.Y * imageScale.YScale)),
-                _dumpInfo.DumpPath);
+            var element = viewModel.GetElements(new Point((int)(p.X * imageScale.XScale), (int)(p.Y * imageScale.YScale)), _dumpInfo.DumpPath);
 
             if (element == null)
             {
@@ -124,8 +125,7 @@ namespace Testura.Android.PageObjectCreator.Views
             var imageHeight = _lastImage.Height;
             var imageWidth = _lastImage.Width;
 
-         
-            return new ImageScale {XScale = imageWidth / aw, YScale = imageHeight / ah};
+            return new ImageScale { XScale = imageWidth / aw, YScale = imageHeight / ah };
         }
 
         private void CreateTemporaryRectangle(AndroidElement element)

@@ -9,7 +9,7 @@ namespace Testura.Android.PageObjectCreator.Util.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var boolean = (bool) value;
+            var boolean = (bool)value;
             return boolean ? Visibility.Collapsed : Visibility.Visible;
         }
 

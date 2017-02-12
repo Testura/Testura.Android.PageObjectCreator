@@ -94,10 +94,10 @@ namespace Testura.Android.PageObjectCreator.Services
             var nodes = new List<AndroidElement>();
 
             var currentNode = document.Root;
-            var androidElement = new AndroidElement(currentNode.Element("node") ,null);
+            var androidElement = new AndroidElement(currentNode.Element("node"), null);
             DoStuff(currentNode.Element("node"), androidElement);
 
-            return new List<AndroidElement> {androidElement};
+            return new List<AndroidElement> { androidElement };
         }
 
         private void DoStuff(XElement element, AndroidElement androidElement)

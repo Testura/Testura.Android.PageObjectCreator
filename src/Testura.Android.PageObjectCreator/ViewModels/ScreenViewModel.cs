@@ -62,14 +62,6 @@ namespace Testura.Android.PageObjectCreator.ViewModels
             return null;
         }
 
-        private void OnAddAndroidElement(AddAndroidElementMessage message)
-        {
-            if (AddElement(message.AndroidElement))
-            {
-                HierarchyNodeAdded?.Invoke(this, message.AndroidElement);
-            }
-        }
-
         public bool AddElement(AndroidElement element)
         {
             var name = _dialogService.ShowNameDialog();
@@ -86,6 +78,14 @@ namespace Testura.Android.PageObjectCreator.ViewModels
             }
 
             return false;
+        }
+
+        private void OnAddAndroidElement(AddAndroidElementMessage message)
+        {
+            if (AddElement(message.AndroidElement))
+            {
+                HierarchyNodeAdded?.Invoke(this, message.AndroidElement);
+            }
         }
 
         private void OnNewDump(DumpMessage message)
