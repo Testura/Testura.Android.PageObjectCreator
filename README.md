@@ -11,9 +11,9 @@ Testura.Android.PageObjectCreator is a help tool which let you inspect the UI hi
 - [Android SDK](https://developer.android.com/studio/index.html)
 
 
-## EXE-file 
+## Download
 
-Download here
+[Download latest release here](https://github.com/Testura/Testura.Android.PageObjectCreator/releases)
 
 ## Usage
 
