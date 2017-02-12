@@ -1,6 +1,6 @@
 ![Testura Logo](http://testura.net/Content/Images/logo.png)
 
-Testura.Android.PageObjectCreator is a tool which let you inspect the UI hierarchy of an Android device to create and generate page objects for Testura.Android. 
+Testura.Android.PageObjectCreator is a help tool which let you inspect the UI hierarchy of an Android device to create and generate page objects for Testura.Android. 
 
 ![Testura Logo](http://www.testura.net/Content/Images/PageObject/Testura.Png)
 
@@ -24,7 +24,10 @@ Download here
 
 ### Select nodes by clicking in the UI or selecting from the hierarchy view 
 
+#### UI 
 ![Testura Logo](http://www.testura.net/Content/Images/PageObject/SelectGif.gif)
+
+#### Hierarchy viewer
 
 ![Testura Logo](http://www.testura.net/Content/Images/PageObject/HierarchyGif.gif)
 
