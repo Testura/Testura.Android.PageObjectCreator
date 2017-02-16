@@ -83,7 +83,6 @@ namespace Testura.Android.PageObjectCreator.Services
             return nodes;
         }
 
-
         /// <summary>
         /// Parse an xml dump and return it as a tree structure
         /// </summary>

@@ -9,7 +9,7 @@ namespace Testura.Android.PageObjectCreator.Util.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var node = (Node) value;
+            var node = (Node)value;
 
             if (!string.IsNullOrEmpty(node.Text))
             {
