@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using PropertyChanged;
+using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.PageObjectCreator.Models;
 using Testura.Android.PageObjectCreator.Models.Messages;
 using Testura.Android.PageObjectCreator.Services;
@@ -18,24 +19,25 @@ namespace Testura.Android.PageObjectCreator.ViewModels
         {
             _dumpService = dumpService;
             _fileService = fileService;
-            AndroidElements = new ObservableCollection<AndroidElement>();
+            Nodes = new ObservableCollection<Node>();
             Attributes = new ObservableCollection<Attribute>();
-            SelectedItemChangedCommand = new RelayCommand<AndroidElement>(SelectedItemChanged);
-            AddCommand = new RelayCommand(AddAndroidElement, CanAddAndroidElement);
+            SelectedItemChangedCommand = new RelayCommand<Node>(SelectedItemChanged);
+            AddCommand = new RelayCommand(AddNode, CanAddNode);
             ExpandAllCommand = new RelayCommand(() => IsTreeExpanded = true);
             ContractAllCommand = new RelayCommand(() => IsTreeExpanded = false);
             MessengerInstance.Register<DumpMessage>(this, OnDump);
+            MessengerInstance.Register<ShowNodeDetailsMessage>(this, (message) => SelectedItemChanged(message.Node));
         }
 
-        public AndroidElement SelectedAndroidElement { get; set; }
+        public Node SelectedNode { get; set; }
 
         public bool IsTreeExpanded { get; set; }
 
-        public ObservableCollection<AndroidElement> AndroidElements { get; set; }
+        public ObservableCollection<Node> Nodes { get; set; }
 
         public ObservableCollection<Attribute> Attributes { get; set; }
 
-        public RelayCommand<AndroidElement> SelectedItemChangedCommand { get; set; }
+        public RelayCommand<Node> SelectedItemChangedCommand { get; set; }
 
         public RelayCommand AddCommand { get; set; }
 
@@ -46,29 +48,29 @@ namespace Testura.Android.PageObjectCreator.ViewModels
         private void OnDump(DumpMessage message)
         {
             var lines = _fileService.ReadAllLinesFromFile(message.DumpInfo.DumpPath);
-            var elements = _dumpService.ParseDumpSimple(string.Join(string.Empty, lines));
-            AndroidElements = new ObservableCollection<AndroidElement>(elements);
+            var node = _dumpService.ParseDumpAsTree(string.Join(string.Empty, lines));
+            Nodes = new ObservableCollection<Node> { node };
         }
 
-        private void SelectedItemChanged(AndroidElement selectAndroidElement)
+        private void SelectedItemChanged(Node selectNode)
         {
-            SelectedAndroidElement = selectAndroidElement;
-            MessengerInstance.Send(new SelectedHierarchyNodeMesssage { SelectedAndroidElement = selectAndroidElement });
+            SelectedNode = selectNode;
+            MessengerInstance.Send(new SelectedHierarchyNodeMesssage { SelectedNode = selectNode });
             Attributes.Clear();
-            foreach (var xAttribute in SelectedAndroidElement.Element.Attributes())
+            foreach (var xAttribute in SelectedNode.Element.Attributes())
             {
                 Attributes.Add(new Attribute(xAttribute.Name.LocalName, xAttribute.Value));
             }
         }
 
-        private void AddAndroidElement()
+        private void AddNode()
         {
-            MessengerInstance.Send(new AddAndroidElementMessage { AndroidElement = SelectedAndroidElement });
+            MessengerInstance.Send(new AddNodeMessage { Node = SelectedNode });
         }
 
-        private bool CanAddAndroidElement()
+        private bool CanAddNode()
         {
-            return SelectedAndroidElement != null;
+            return SelectedNode != null;
         }
     }
 }

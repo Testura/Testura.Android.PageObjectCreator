@@ -52,22 +52,22 @@ namespace Testura.Android.PageObjectCreator.ViewModels
         private void LoadAttributes()
         {
             Attributes.Clear();
-            Attributes.Add(new Attribute("Index", UiObjectInfo.AndroidElement.Index));
-            Attributes.Add(new Attribute("Text", UiObjectInfo.AndroidElement.Text));
-            Attributes.Add(new Attribute("Resource-id", UiObjectInfo.AndroidElement.ResourceId));
-            Attributes.Add(new Attribute("Class", UiObjectInfo.AndroidElement.Class));
-            Attributes.Add(new Attribute("Package", UiObjectInfo.AndroidElement.Package));
-            Attributes.Add(new Attribute("Content-desc", UiObjectInfo.AndroidElement.ContentDesc));
+            Attributes.Add(new Attribute("Index", UiObjectInfo.Node.Index));
+            Attributes.Add(new Attribute("Text", UiObjectInfo.Node.Text));
+            Attributes.Add(new Attribute("Resource-id", UiObjectInfo.Node.ResourceId));
+            Attributes.Add(new Attribute("Class", UiObjectInfo.Node.Class));
+            Attributes.Add(new Attribute("Package", UiObjectInfo.Node.Package));
+            Attributes.Add(new Attribute("Content-desc", UiObjectInfo.Node.ContentDesc));
         }
 
         private void LoadWiths()
         {
-            CheckWith(UiObjectInfo.AndroidElement.Text, AttributeTags.Text);
-            CheckWith(UiObjectInfo.AndroidElement.ResourceId, AttributeTags.ResourceId);
-            CheckWith(UiObjectInfo.AndroidElement.Class, AttributeTags.Class);
-            CheckWith(UiObjectInfo.AndroidElement.ContentDesc, AttributeTags.ContentDesc);
-            CheckWith(UiObjectInfo.AndroidElement.Package, AttributeTags.Package);
-            CheckWith(UiObjectInfo.AndroidElement.Index, AttributeTags.Index);
+            CheckWith(UiObjectInfo.Node.Text, AttributeTags.Text);
+            CheckWith(UiObjectInfo.Node.ResourceId, AttributeTags.ResourceId);
+            CheckWith(UiObjectInfo.Node.Class, AttributeTags.Class);
+            CheckWith(UiObjectInfo.Node.ContentDesc, AttributeTags.ContentDesc);
+            CheckWith(UiObjectInfo.Node.Package, AttributeTags.Package);
+            CheckWith(UiObjectInfo.Node.Index, AttributeTags.Index);
         }
 
         private void CheckWith(string value, AttributeTags tag)

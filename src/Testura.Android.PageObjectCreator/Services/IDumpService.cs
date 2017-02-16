@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.PageObjectCreator.Models;
 
 namespace Testura.Android.PageObjectCreator.Services
@@ -17,9 +18,14 @@ namespace Testura.Android.PageObjectCreator.Services
         /// Parse an xml dump
         /// </summary>
         /// <param name="dump">The xml dump</param>
-        /// <returns>All parsed android elements</returns>
-        IList<AndroidElement> ParseDump(string dump);
+        /// <returns>All parsed nodes</returns>
+        IList<Node> ParseDump(string dump);
 
-        IList<AndroidElement> ParseDumpSimple(string dump);
+        /// <summary>
+        /// Parse an xml dump and return it as a tree structure
+        /// </summary>
+        /// <param name="dump">The xml dump</param>
+        /// <returns>The root node</returns>
+        Node ParseDumpAsTree(string dump);
     }
 }

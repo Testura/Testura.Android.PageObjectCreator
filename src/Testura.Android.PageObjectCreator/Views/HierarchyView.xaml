@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Testura.Android.PageObjectCreator.Views"
              xmlns:models="clr-namespace:Testura.Android.PageObjectCreator.Models"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:data="clr-namespace:Testura.Android.Device.Ui.Nodes.Data;assembly=Testura.Android"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              DataContext="{Binding Source={StaticResource Locator}, Path=XmlViewModel}"
@@ -123,10 +124,10 @@
                Margin="10, 10, 10, 10"
                Grid.Row="1"
                Grid.Column="0" />
-        <TreeView ItemsSource="{Binding DataContext.AndroidElements, ElementName=root}" Grid.Row="2" Margin="10, 0, 0, 0" x:Name="Nodes">
+        <TreeView ItemsSource="{Binding DataContext.Nodes, ElementName=root}" Grid.Row="2" Margin="10, 0, 0, 0" x:Name="Nodes">
             <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type models:AndroidElement}" ItemsSource="{Binding Children}">
-                    <TextBlock Text="{Binding Path=DisplayName}" />
+                <HierarchicalDataTemplate DataType="{x:Type data:Node}" ItemsSource="{Binding Children}">
+                    <TextBlock Text="{Binding Converter={StaticResource NodeToHierarchyTextConverter}}" />
                 </HierarchicalDataTemplate>
             </TreeView.Resources>
             <i:Interaction.Triggers>
@@ -157,6 +158,7 @@
                       CanUserSortColumns="False"
                       MinHeight="300"
                       CanUserAddRows="False"
+                      SelectionMode="Single"
                       IsReadOnly="True">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Attribute"

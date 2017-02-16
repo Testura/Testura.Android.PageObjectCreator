@@ -2,8 +2,8 @@
 
 namespace Testura.Android.PageObjectCreator.Models.Messages
 {
-    public class SelectedHierarchyNodeMesssage
+   public class ShowNodeDetailsMessage
     {
-        public Node SelectedNode { get; set; }
+        public Node Node { get; set; }
     }
 }

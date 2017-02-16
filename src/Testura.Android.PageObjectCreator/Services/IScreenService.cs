@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
+using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.PageObjectCreator.Models;
 
 namespace Testura.Android.PageObjectCreator.Services
@@ -12,6 +13,6 @@ namespace Testura.Android.PageObjectCreator.Services
         /// <param name="point">Points to check</param>
         /// <param name="dump">the xml dump</param>
         /// <returns>All intersected android elements</returns>
-        IList<AndroidElement> GetElements(Point point, string dump);
+        IList<Node> GetNodes(Point point, string dump);
     }
 }

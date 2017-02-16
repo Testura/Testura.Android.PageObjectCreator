@@ -18,6 +18,7 @@
                 <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
                 <converters:BooleanToVisibilityInvertedConverter x:Key="BooleanToVisibilityInvertedConverter" />
                 <converters:InvertBooleanConverter x:Key="InvertBoolConverter" />
+                <converters:NodeToHierarchyTextConverter x:Key="NodeToHierarchyTextConverter" />
                 <system:Double x:Key="TabItemFontSize">16</system:Double>
                 <Thickness x:Key="ControlMargin">10</Thickness>
                 <BitmapImage x:Key="MainIcon"

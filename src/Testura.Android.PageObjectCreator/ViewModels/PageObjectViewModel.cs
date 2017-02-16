@@ -54,6 +54,7 @@ namespace Testura.Android.PageObjectCreator.ViewModels
         private void DeleteUiObjectInfo(UiObjectInfo uiObjectInfo)
         {
             PageObject.UiObjectInfos.Remove(uiObjectInfo);
+            MessengerInstance.Send(new UiObjectInfoRemovedMessage { UiObjectInfo = uiObjectInfo });
             SendPageObjectChanged();
         }
 

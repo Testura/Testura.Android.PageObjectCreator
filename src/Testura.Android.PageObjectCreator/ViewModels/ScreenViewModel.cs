@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using GalaSoft.MvvmLight;
 using PropertyChanged;
+using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.PageObjectCreator.Models;
 using Testura.Android.PageObjectCreator.Models.Messages;
 using Testura.Android.PageObjectCreator.Services;
@@ -28,12 +29,15 @@ namespace Testura.Android.PageObjectCreator.ViewModels
             MessengerInstance.Register<StartedDumpScreenMessage>(this, OnStartedDumpingScreen);
             MessengerInstance.Register<StoppedDumpScreenMessage>(this, OnStoppedDumpingScreen);
             MessengerInstance.Register<SelectedHierarchyNodeMesssage>(this, OnSelectedHierarchyNode);
-            MessengerInstance.Register<AddAndroidElementMessage>(this, OnAddAndroidElement);
+            MessengerInstance.Register<AddNodeMessage>(this, OnAddNode);
+            MessengerInstance.Register<UiObjectInfoRemovedMessage>(this, OnUiObjectInfoRemoved);
         }
 
-        public event EventHandler<AndroidElement> NewTemporaryHierarchyNode;
+        public event EventHandler<Node> NewTemporaryHierarchyNode;
 
-        public event EventHandler<AndroidElement> HierarchyNodeAdded;
+        public event EventHandler<Node> HierarchyNodeAdded;
+
+        public event EventHandler<Node> NodeRemoved;
 
         public event EventHandler<AndroidDumpInfo> LoadImage;
 
@@ -41,28 +45,28 @@ namespace Testura.Android.PageObjectCreator.ViewModels
 
         public bool ShouldShowInfoMessage { get; set; }
 
-        public AndroidElement GetElements(Point point, string dumpPath)
+        public Node GetNodes(Point point, string dumpPath)
         {
             var lines = _fileService.ReadAllLinesFromFile(dumpPath);
-            var elements = _screenService.GetElements(point, string.Join(string.Empty, lines));
-            if (elements.Any())
+            var nodes = _screenService.GetNodes(point, string.Join(string.Empty, lines));
+            if (nodes.Any())
             {
-                var element = elements.First();
+                var node = nodes.First();
 
                 // Sometimes we get nodes that contains nodes with the same boundary
                 // So this is just to make sure we get the absolut child.
-                while (element.Children.Any())
+                while (node.Children.Any())
                 {
-                    element = element.Children.First();
+                    node = node.Children.First();
                 }
 
-                return element;
+                return node;
             }
 
             return null;
         }
 
-        public bool AddElement(AndroidElement element)
+        public bool AddNode(Node node)
         {
             var name = _dialogService.ShowNameDialog();
             if (!string.IsNullOrEmpty(name))
@@ -70,7 +74,7 @@ namespace Testura.Android.PageObjectCreator.ViewModels
                 var uiNodeInfo = new UiObjectInfo
                 {
                     Name = name,
-                    AndroidElement = element,
+                    Node = node,
                     FindWith = new List<AttributeTags>()
                 };
                 MessengerInstance.Send(new AddUiObjectInfoMessage { UiNodeInfo = uiNodeInfo });
@@ -80,11 +84,16 @@ namespace Testura.Android.PageObjectCreator.ViewModels
             return false;
         }
 
-        private void OnAddAndroidElement(AddAndroidElementMessage message)
+        public void ShowNodeDetails(Node node)
         {
-            if (AddElement(message.AndroidElement))
+            MessengerInstance.Send(new ShowNodeDetailsMessage { Node = node });
+        }
+
+        private void OnAddNode(AddNodeMessage message)
+        {
+            if (AddNode(message.Node))
             {
-                HierarchyNodeAdded?.Invoke(this, message.AndroidElement);
+                HierarchyNodeAdded?.Invoke(this, message.Node);
             }
         }
 
@@ -107,7 +116,12 @@ namespace Testura.Android.PageObjectCreator.ViewModels
 
         private void OnSelectedHierarchyNode(SelectedHierarchyNodeMesssage message)
         {
-            NewTemporaryHierarchyNode?.Invoke(this, message.SelectedAndroidElement);
+            NewTemporaryHierarchyNode?.Invoke(this, message.SelectedNode);
+        }
+
+        private void OnUiObjectInfoRemoved(UiObjectInfoRemovedMessage message)
+        {
+            NodeRemoved?.Invoke(this, message.UiObjectInfo.Node);
         }
     }
 }

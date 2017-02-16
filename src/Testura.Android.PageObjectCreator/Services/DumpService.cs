@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.PageObjectCreator.Models;
 using Testura.Android.PageObjectCreator.Util;
 
@@ -56,24 +57,24 @@ namespace Testura.Android.PageObjectCreator.Services
         /// Parse an xml dump
         /// </summary>
         /// <param name="dump">The xml dump</param>
-        /// <returns>All parsed android elements</returns>
-        public IList<AndroidElement> ParseDump(string dump)
+        /// <returns>All parsed nodes</returns>
+        public IList<Node> ParseDump(string dump)
         {
             var document = XDocument.Parse(dump);
 
-            var nodes = new List<AndroidElement>();
+            var nodes = new List<Node>();
             foreach (var element in document.Descendants("node"))
             {
-                AndroidElement node;
+                Node node;
                 var parent = nodes.FirstOrDefault(p => p.Element == element.Parent);
                 if (parent != null)
                 {
-                    node = new AndroidElement(element, parent);
+                    node = new Node(element, parent);
                     parent.Children.Add(node);
                 }
                 else
                 {
-                    node = new AndroidElement(element, null);
+                    node = new Node(element, null);
                 }
 
                 nodes.Add(node);
@@ -82,32 +83,29 @@ namespace Testura.Android.PageObjectCreator.Services
             return nodes;
         }
 
+
         /// <summary>
-        /// Parse an xml dump
+        /// Parse an xml dump and return it as a tree structure
         /// </summary>
         /// <param name="dump">The xml dump</param>
-        /// <returns>All parsed android elements</returns>
-        public IList<AndroidElement> ParseDumpSimple(string dump)
+        /// <returns>The root node</returns>
+        public Node ParseDumpAsTree(string dump)
         {
             var document = XDocument.Parse(dump);
-
-            var nodes = new List<AndroidElement>();
-
             var currentNode = document.Root;
-            var androidElement = new AndroidElement(currentNode.Element("node"), null);
-            DoStuff(currentNode.Element("node"), androidElement);
-
-            return new List<AndroidElement> { androidElement };
+            var node = new Node(currentNode.Element("node"), null);
+            TraverseElement(currentNode.Element("node"), node);
+            return node;
         }
 
-        private void DoStuff(XElement element, AndroidElement androidElement)
+        private void TraverseElement(XElement element, Node node)
         {
-            var childEelements = element.Elements();
-            foreach (var child in childEelements)
+            var childElements = element.Elements();
+            foreach (var child in childElements)
             {
-                var childAndroidElement = new AndroidElement(child, androidElement);
-                DoStuff(child, childAndroidElement);
-                androidElement.Children.Add(childAndroidElement);
+                var childNode = new Node(child, node);
+                TraverseElement(child, childNode);
+                node.Children.Add(childNode);
             }
         }
 

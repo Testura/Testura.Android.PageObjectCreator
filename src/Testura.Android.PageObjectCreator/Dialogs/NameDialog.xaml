@@ -20,8 +20,8 @@
         <StackPanel Margin="10">
             <StackPanel Orientation="Horizontal">
                 <Label Content="Name:" Margin="0, 0, 10, 0" />
-                <TextBox x:Name="WebElementName"
-                         controls:TextBoxHelper.Watermark="Element name"
+                <TextBox x:Name="TxtUiObjectName"
+                         controls:TextBoxHelper.Watermark="Ui object name"
                          controls:TextBoxHelper.IsSpellCheckContextMenuEnabled="True"
                          Width="404" />
             </StackPanel>
