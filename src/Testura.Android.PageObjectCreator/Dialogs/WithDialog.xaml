@@ -6,7 +6,7 @@
                        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
         TitleCharacterCasing="Normal"
-        Title="Select Withs" Height="315" Width="575"
+        Title="Select Withs" Height="345" Width="575"
         GlowBrush="{DynamicResource AccentColorBrush}"
         Icon="{StaticResource MainIcon}" WindowStartupLocation="CenterScreen"
         DataContext="{Binding Source={StaticResource Locator}, Path=WithViewModel}"
@@ -89,7 +89,7 @@
                       ItemsSource="{Binding Attributes}"
                       AutoGenerateColumns="False"
                       CanUserSortColumns="False"
-                      MinHeight="300"
+                      Height="300"
                       CanUserAddRows="False"
                       IsReadOnly="True">
                     <DataGrid.Columns>
