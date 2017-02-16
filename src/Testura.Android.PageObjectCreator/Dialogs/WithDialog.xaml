@@ -34,7 +34,7 @@
                         <RowDefinition Height="34"/>
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <Label Content="Not Select with"
+                    <Label Content="Select not with"
                            Foreground="White"
                            Background="{StaticResource WindowTitleColorBrush}"
                            Margin="10, 5, 10, 5"
