@@ -159,7 +159,8 @@
                       MinHeight="300"
                       CanUserAddRows="False"
                       SelectionMode="Single"
-                      IsReadOnly="True">
+                      IsReadOnly="True"
+                      SelectionUnit="Cell">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Attribute"
                                         Binding="{Binding Name}"

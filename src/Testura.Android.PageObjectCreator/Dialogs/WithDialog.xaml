@@ -91,7 +91,8 @@
                       CanUserSortColumns="False"
                       Height="300"
                       CanUserAddRows="False"
-                      IsReadOnly="True">
+                      IsReadOnly="True"
+                      SelectionUnit="Cell">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Attribute"
                                         Binding="{Binding Name}"
