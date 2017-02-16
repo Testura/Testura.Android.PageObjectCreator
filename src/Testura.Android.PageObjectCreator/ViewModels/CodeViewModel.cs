@@ -88,17 +88,17 @@ namespace Testura.Android.PageObjectCreator.ViewModels
             switch (with)
             {
                 case AttributeTags.Text:
-                    return uiObjectInfo.AndroidElement.Text;
+                    return uiObjectInfo.Node.Text;
                 case AttributeTags.ResourceId:
-                    return uiObjectInfo.AndroidElement.ResourceId;
+                    return uiObjectInfo.Node.ResourceId;
                 case AttributeTags.ContentDesc:
-                    return uiObjectInfo.AndroidElement.ContentDesc;
+                    return uiObjectInfo.Node.ContentDesc;
                 case AttributeTags.Class:
-                    return uiObjectInfo.AndroidElement.Class;
+                    return uiObjectInfo.Node.Class;
                 case AttributeTags.Package:
-                    return uiObjectInfo.AndroidElement.Package;
+                    return uiObjectInfo.Node.Package;
                 case AttributeTags.Index:
-                    return uiObjectInfo.AndroidElement.Index;
+                    return uiObjectInfo.Node.Index;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(with), with, null);
             }

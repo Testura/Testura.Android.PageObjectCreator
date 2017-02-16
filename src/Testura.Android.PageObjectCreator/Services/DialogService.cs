@@ -12,7 +12,7 @@ namespace Testura.Android.PageObjectCreator.Services
         public string ShowNameDialog()
         {
             var dialog = new NameDialog();
-            return dialog.ShowDialog().Value ? dialog.ElementName : null;
+            return dialog.ShowDialog().Value ? dialog.UiObjectName : null;
         }
 
         /// <summary>

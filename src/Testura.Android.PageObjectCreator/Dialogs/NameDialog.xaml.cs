@@ -11,15 +11,15 @@ namespace Testura.Android.PageObjectCreator.Dialogs
         public NameDialog()
         {
             InitializeComponent();
-            WebElementName.Text = string.Empty;
+            TxtUiObjectName.Text = string.Empty;
         }
 
-        public string ElementName { get; set; }
+        public string UiObjectName { get; set; }
 
         private void BtnOkClick(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
-            ElementName = WebElementName.Text;
+            UiObjectName = TxtUiObjectName.Text;
             Close();
         }
 

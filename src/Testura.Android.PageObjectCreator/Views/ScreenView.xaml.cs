@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.PageObjectCreator.Models;
 using Testura.Android.PageObjectCreator.ViewModels;
 
@@ -16,46 +17,58 @@ namespace Testura.Android.PageObjectCreator.Views
     /// </summary>
     public partial class ScreenView : UserControl
     {
-        private readonly IList<UIElement> _savedElements;
+        private readonly ScreenViewModel _viewModel;
+        private readonly IDictionary<Node, UIElement> _savedNodes;
         private AndroidDumpInfo _dumpInfo;
         private BitmapImage _lastImage;
-        private Rectangle _lastTemporaryHierarchyElement;
+        private Rectangle _lastSelectedNodeRectangle;
+        private Rectangle _lastTemporaryHierarchyNode;
 
         public ScreenView()
         {
-            _savedElements = new List<UIElement>();
+            _savedNodes = new Dictionary<Node, UIElement>();
             InitializeComponent();
-            var viewModel = DataContext as ScreenViewModel;
-            viewModel.LoadImage += OnLoadImage;
-            viewModel.NewTemporaryHierarchyNode += OnNewTemporaryHierarchyNode;
-            viewModel.HierarchyNodeAdded += HierarchyNodeAdded;
+            _viewModel = DataContext as ScreenViewModel;
+            _viewModel.LoadImage += OnLoadImage;
+            _viewModel.NewTemporaryHierarchyNode += OnNewTemporaryHierarchyNode;
+            _viewModel.HierarchyNodeAdded += OnHierarchyNodeAdded;
+            _viewModel.NodeRemoved += OnNodeRemoved;
         }
 
-        private void HierarchyNodeAdded(object sender, AndroidElement e)
+        private void OnNodeRemoved(object sender, Node node)
         {
-            _lastTemporaryHierarchyElement.Stroke = new SolidColorBrush(Colors.Red);
-            _savedElements.Add(_lastTemporaryHierarchyElement);
-            _lastTemporaryHierarchyElement = null;
-        }
-
-        private void OnNewTemporaryHierarchyNode(object sender, AndroidElement element)
-        {
-            CreateTemporaryRectangle(element);
-            if (_lastTemporaryHierarchyElement != null)
+            if (_savedNodes.ContainsKey(node))
             {
-                DeviceCanvas.Children.Remove(_lastTemporaryHierarchyElement);
+                DeviceCanvas.Children.Remove(_savedNodes[node]);
+                _savedNodes.Remove(node);
+            }
+        }
+
+        private void OnHierarchyNodeAdded(object sender, Node node)
+        {
+            _lastTemporaryHierarchyNode.Stroke = new SolidColorBrush(Colors.Red);
+            _savedNodes.Add(node, _lastTemporaryHierarchyNode);
+            _lastTemporaryHierarchyNode = null;
+        }
+
+        private void OnNewTemporaryHierarchyNode(object sender, Node node)
+        {
+            if (_lastTemporaryHierarchyNode != null)
+            {
+                DeviceCanvas.Children.Remove(_lastTemporaryHierarchyNode);
             }
 
-            _lastTemporaryHierarchyElement = DeviceCanvas.Children[DeviceCanvas.Children.Count - 1] as Rectangle;
+            CreateTemporaryRectangle(node);
+            _lastTemporaryHierarchyNode = DeviceCanvas.Children[DeviceCanvas.Children.Count - 1] as Rectangle;
         }
 
         private void OnLoadImage(object sender, AndroidDumpInfo dumpInfo)
         {
-            _savedElements.Clear();
+            _savedNodes.Clear();
             _dumpInfo = dumpInfo;
             _lastImage = null;
             var image = new BitmapImage();
-            using (FileStream stream = File.OpenRead(dumpInfo.ScreenshotPath))
+            using (var stream = File.OpenRead(dumpInfo.ScreenshotPath))
             {
                 image.BeginInit();
                 image.CacheOption = BitmapCacheOption.OnLoad;
@@ -70,49 +83,59 @@ namespace Testura.Android.PageObjectCreator.Views
                 Source = _lastImage,
             };
             DeviceCanvas.Children.Add(fixedImage);
-            _savedElements.Add(fixedImage);
         }
 
         private void DeviceCanvas_OnMouseMove(object sender, MouseEventArgs e)
         {
-            if (DeviceCanvas.Children.Count > 0)
+            if (DeviceCanvas.Children.Count == 0)
             {
-                if (!_savedElements.Contains(DeviceCanvas.Children[DeviceCanvas.Children.Count - 1]) && DeviceCanvas.Children[DeviceCanvas.Children.Count - 1] != _lastTemporaryHierarchyElement)
-                {
-                    DeviceCanvas.Children.RemoveAt(DeviceCanvas.Children.Count - 1);
-                }
+                return;
+            }
 
-                var element = MarkElement();
-                if (e.LeftButton == MouseButtonState.Pressed && element != null)
+            if (_lastSelectedNodeRectangle != null)
+            {
+                DeviceCanvas.Children.Remove(_lastSelectedNodeRectangle);
+            }
+
+            var node = MarkNode();
+
+            if (e.RightButton == MouseButtonState.Pressed && node != null)
+            {
+                DeviceCanvas.Children.Remove(_lastSelectedNodeRectangle);
+                _lastSelectedNodeRectangle = null;
+                _viewModel.ShowNodeDetails(node);
+                return;
+            }
+
+            if (e.LeftButton == MouseButtonState.Pressed && node != null)
+            {
+                var rec = _lastSelectedNodeRectangle;
+                _lastSelectedNodeRectangle = null;
+                rec.Stroke = new SolidColorBrush(Colors.Red);
+                if (_viewModel.AddNode(node))
                 {
-                    var rect = DeviceCanvas.Children[DeviceCanvas.Children.Count - 1] as System.Windows.Shapes.Rectangle;
-                    rect.Stroke = new SolidColorBrush(Colors.Red);
-                    _savedElements.Add(rect);
-                    var viewModel = (ScreenViewModel)DataContext;
-                    if (!viewModel.AddElement(element))
-                    {
-                        _savedElements.Remove(DeviceCanvas.Children[DeviceCanvas.Children.Count - 1]);
-                    }
+                    _savedNodes.Add(node, rec);
+                }
+                else
+                {
+                    DeviceCanvas.Children.Remove(rec);
                 }
             }
         }
 
-        private AndroidElement MarkElement()
+        private Node MarkNode()
         {
             var imageScale = GetImageScale();
-            var p = Mouse.GetPosition(DeviceCanvas);
+            var mousePosition = Mouse.GetPosition(DeviceCanvas);
+            var node = _viewModel.GetNodes(new Point((int)(mousePosition.X * imageScale.XScale), (int)(mousePosition.Y * imageScale.YScale)), _dumpInfo.DumpPath);
 
-            var viewModel = (ScreenViewModel)DataContext;
-
-            var element = viewModel.GetElements(new Point((int)(p.X * imageScale.XScale), (int)(p.Y * imageScale.YScale)), _dumpInfo.DumpPath);
-
-            if (element == null)
+            if (node == null)
             {
                 return null;
             }
 
-            CreateTemporaryRectangle(element);
-            return element;
+            CreateTemporaryRectangle(node);
+            return node;
         }
 
         private ImageScale GetImageScale()
@@ -128,37 +151,27 @@ namespace Testura.Android.PageObjectCreator.Views
             return new ImageScale { XScale = imageWidth / aw, YScale = imageHeight / ah };
         }
 
-        private void CreateTemporaryRectangle(AndroidElement element)
+        private void CreateTemporaryRectangle(Node node)
         {
             var imageScale = GetImageScale();
-            var bounds = element.GetElementBounds();
+            var bounds = node.GetNodeBounds();
 
-            System.Windows.Shapes.Rectangle rect;
-            rect = new System.Windows.Shapes.Rectangle();
-            rect.Stroke = new SolidColorBrush(Colors.Blue);
-            rect.Fill = new SolidColorBrush(Colors.Transparent);
-            rect.Width = (bounds[1].X - bounds[0].X) / imageScale.XScale;
-            rect.Height = (bounds[1].Y - bounds[0].Y) / imageScale.YScale;
-            Canvas.SetLeft(rect, bounds[0].X / imageScale.XScale);
-            Canvas.SetTop(rect, bounds[0].Y / imageScale.YScale);
-            DeviceCanvas.Children.Add(rect);
+            _lastSelectedNodeRectangle = new Rectangle();
+            _lastSelectedNodeRectangle.Stroke = new SolidColorBrush(Colors.Blue);
+            _lastSelectedNodeRectangle.Fill = new SolidColorBrush(Colors.Transparent);
+            _lastSelectedNodeRectangle.Width = (bounds[1].X - bounds[0].X) / imageScale.XScale;
+            _lastSelectedNodeRectangle.Height = (bounds[1].Y - bounds[0].Y) / imageScale.YScale;
+            Canvas.SetLeft(_lastSelectedNodeRectangle, bounds[0].X / imageScale.XScale);
+            Canvas.SetTop(_lastSelectedNodeRectangle, bounds[0].Y / imageScale.YScale);
+            DeviceCanvas.Children.Add(_lastSelectedNodeRectangle);
         }
 
         private void DeviceCanvas_OnMouseLeave(object sender, MouseEventArgs e)
         {
-            if (DeviceCanvas.Children.Count == 0)
+            if (_lastSelectedNodeRectangle != null)
             {
-                return;
+                DeviceCanvas.Children.Remove(_lastSelectedNodeRectangle);
             }
-
-            var lastChild = DeviceCanvas.Children[DeviceCanvas.Children.Count - 1];
-
-            if (_savedElements.Contains(lastChild))
-            {
-                return;
-            }
-
-            DeviceCanvas.Children.Remove(lastChild);
         }
     }
 }

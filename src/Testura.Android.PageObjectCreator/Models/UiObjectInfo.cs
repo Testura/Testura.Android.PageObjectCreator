@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using PropertyChanged;
+using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Util;
 
 namespace Testura.Android.PageObjectCreator.Models
@@ -15,12 +16,12 @@ namespace Testura.Android.PageObjectCreator.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the android element element
+        /// Gets or sets the node
         /// </summary>
-        public AndroidElement AndroidElement { get; set; }
+        public Node Node { get; set; }
 
         /// <summary>
-        /// Gets or sets the find by for a android element
+        /// Gets or sets the find with for a node
         /// </summary>
         public IList<AttributeTags> FindWith { get; set; }
 
@@ -41,15 +42,15 @@ namespace Testura.Android.PageObjectCreator.Models
                 switch (attributeTagse)
                 {
                     case AttributeTags.ResourceId:
-                        stringBuilder.Append($"ResourceId={AndroidElement.ResourceId},");
+                        stringBuilder.Append($"ResourceId={Node.ResourceId},");
                         break;
 
                     case AttributeTags.ContentDesc:
-                        stringBuilder.Append($"ContentDesc={AndroidElement.ContentDesc},");
+                        stringBuilder.Append($"ContentDesc={Node.ContentDesc},");
                         break;
 
                     case AttributeTags.Text:
-                        stringBuilder.Append($"Text={AndroidElement.Text},");
+                        stringBuilder.Append($"Text={Node.Text},");
                         break;
 
                     default:
