@@ -35,11 +35,11 @@ Testura.Android.PageObjectCreator is a tool to:
 
 #### Hierarchy viewer
 
-![Testura Logo](http://www.testura.net/Content/Images/PageObject/HierarchyGif.gif)
+![Testura Logo](http://www.testura.net/Content/Images/PageObject/HierarchyGif2.gif)
 
 ### Select how we should locate the object inside our framework 
 
-![Testura Logo](http://www.testura.net/Content/Images/PageObject/WithGif.gif)
+![Testura Logo](http://www.testura.net/Content/Images/PageObject/WithGif2.gif)
 
 ### View the generated code 
 
