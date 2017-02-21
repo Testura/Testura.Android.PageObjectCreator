@@ -14,7 +14,7 @@ Testura.Android.PageObjectCreator is a tool to:
 
 ## Prerequisites
 
-- [Android SDK](https://developer.android.com/studio/index.html)
+- [Android SDK](https://developer.android.com/studio/index.html) (also need to add adb to environment variables)
 
 
 ## Download
