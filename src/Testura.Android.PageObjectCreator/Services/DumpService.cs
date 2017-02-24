@@ -42,7 +42,7 @@ namespace Testura.Android.PageObjectCreator.Services
             {
                 var dump = DumpScreen(serial);
                 var screenshot = TakeScreenshot(serial);
-                var packageAndActivity = GetCurrentFocus().Split('/');
+                var packageAndActivity = GetCurrentFocus(serial).Split('/');
                 return new AndroidDumpInfo
                 {
                     DumpPath = dump,
@@ -111,24 +111,22 @@ namespace Testura.Android.PageObjectCreator.Services
         private string DumpScreen(string serial)
         {
             var savePath = Path.Combine(AssemblyDirectory, "dump.xml");
-            _terminal.ExecuteCmdCommand("adb.exe", "shell", "uiautomator", "dump", "/sdcard/dump.xml");
-            _terminal.ExecuteCmdCommand("adb.exe", "pull", "/sdcard/dump.xml", AssemblyDirectory);
-            _terminal.ExecuteCmdCommand("adb.exe", "shell", "rm", savePath);
+            _terminal.ExecuteCmdCommand("adb.exe", "-s", serial, "shell", "uiautomator", "dump", "/sdcard/dump.xml");
+            _terminal.ExecuteCmdCommand("adb.exe", "-s", serial, "pull", "/sdcard/dump.xml", AssemblyDirectory);
             return savePath;
         }
 
         private string TakeScreenshot(string serial)
         {
             var savePath = Path.Combine(AssemblyDirectory, "screenshot.png");
-            _terminal.ExecuteCmdCommand("adb.exe", "shell", "screencap ", "-p", "/sdcard/screenshot.png");
-            _terminal.ExecuteCmdCommand("adb.exe", "pull", "/sdcard/screenshot.png", AssemblyDirectory);
-            _terminal.ExecuteCmdCommand("adb.exe", "shell", "rm", savePath);
+            _terminal.ExecuteCmdCommand("adb.exe", "-s", serial, "shell", "screencap ", "-p", "/sdcard/screenshot.png");
+            _terminal.ExecuteCmdCommand("adb.exe", "-s", serial, "pull", "/sdcard/screenshot.png", AssemblyDirectory);
             return savePath;
         }
 
-        private string GetCurrentFocus()
+        private string GetCurrentFocus(string serial)
         {
-            var result = _terminal.ExecuteCmdCommand("adb.exe", "shell", "dumpsys window windows | grep -E 'mCurrentFocus|mFocusedApp'");
+            var result = _terminal.ExecuteCmdCommand("adb.exe", "-s", serial, "shell", "dumpsys window windows | grep -E 'mCurrentFocus|mFocusedApp'");
             var focus = result.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).First();
             return focus.Split(' ', '}')[4];
         }

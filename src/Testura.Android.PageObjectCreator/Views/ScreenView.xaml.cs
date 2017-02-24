@@ -92,7 +92,7 @@ namespace Testura.Android.PageObjectCreator.Views
                 return;
             }
 
-            if (_lastSelectedNodeRectangle != null)
+            if (_lastSelectedNodeRectangle != null && _lastSelectedNodeRectangle != _lastTemporaryHierarchyNode)
             {
                 DeviceCanvas.Children.Remove(_lastSelectedNodeRectangle);
             }
