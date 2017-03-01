@@ -1,4 +1,4 @@
-![Testura Logo](http://testura.net/Content/Images/logo.png)
+![Testura Logo](http://testura.net/Content/Images/logo2.png)
 
 Testura.Android.PageObjectCreator is a tool to: 
 
