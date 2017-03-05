@@ -6,7 +6,7 @@
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       xmlns:views="clr-namespace:Testura.Android.PageObjectCreator.Views"
                       mc:Ignorable="d"
-        Title="Testura - Page object generator" Height="350" Width="525"
+        Title="Testura - Page object creator" Height="350" Width="525"
         DataContext="{Binding Source={StaticResource Locator}, Path=MainViewModel}"
         TitleCharacterCasing="Normal"
         GlowBrush="{DynamicResource AccentColorBrush}"
