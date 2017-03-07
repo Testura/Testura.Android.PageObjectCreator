@@ -158,6 +158,7 @@
     <Compile Include="Models\Messages\StoppedDumpScreenMessage.cs" />
     <Compile Include="Models\Messages\ShowNodeDetailsMessage.cs" />
     <Compile Include="Models\Messages\UiObjectInfoRemovedMessage.cs" />
+    <Compile Include="Models\OptimalWith.cs" />
     <Compile Include="Models\PageObject.cs" />
     <Compile Include="Models\UiObjectInfo.cs" />
     <Compile Include="Models\Messages\AddUiObjectInfoMessage.cs" />
@@ -170,7 +171,9 @@
     <Compile Include="Services\IDeviceService.cs" />
     <Compile Include="Services\IDumpService.cs" />
     <Compile Include="Services\IFileService.cs" />
+    <Compile Include="Services\IOptimalWithService.cs" />
     <Compile Include="Services\IScreenService.cs" />
+    <Compile Include="Services\OptimalWithService.cs" />
     <Compile Include="Services\ScreenService.cs" />
     <Compile Include="Util\Behaviors\AvalonEditBehavior.cs" />
     <Compile Include="Util\Converters\BooleanToVisibilityInvertedConverter.cs" />
