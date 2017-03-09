@@ -11,13 +11,15 @@ namespace Testura.Android.PageObjectCreator.ViewModels
     public class OperationViewModel : ViewModelBase
     {
         private readonly IDumpService _dumpService;
+        private readonly IFileService _fileService;
         private readonly IDialogService _dialogService;
         private string _serial;
         private bool _isDeviceAvailable;
 
-        public OperationViewModel(IDumpService dumpService, IDialogService dialogService)
+        public OperationViewModel(IDumpService dumpService, IFileService fileService, IDialogService dialogService)
         {
             _dumpService = dumpService;
+            _fileService = fileService;
             _dialogService = dialogService;
             DumpCommand = new RelayCommand(DumpScreen);
             MessengerInstance.Register<DeviceAvailableMessage>(this, NewDeviceAvailable);
@@ -40,7 +42,9 @@ namespace Testura.Android.PageObjectCreator.ViewModels
             try
             {
                 var dumpInformation = await _dumpService.DumpScreenAsync(_serial);
-                MessengerInstance.Send(new DumpMessage { DumpInfo = dumpInformation });
+                var lines = _fileService.ReadAllLinesFromFile(dumpInformation.DumpPath);
+                var node = _dumpService.ParseDumpAsTree(string.Join(string.Empty, lines));
+                MessengerInstance.Send(new DumpMessage { DumpInfo = dumpInformation, Node = node });
                 IsGoToActivityEnabled = true;
             }
             catch (Exception)

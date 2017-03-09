@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 using Testura.Android.Device.Ui.Nodes.Data;
+using Testura.Android.PageObjectCreator.Models;
 
 namespace Testura.Android.PageObjectCreator.Util.Converters
 {
@@ -9,7 +10,7 @@ namespace Testura.Android.PageObjectCreator.Util.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var node = (Node)value;
+            var node = ((NodeTreeItem)value).Node;
 
             if (!string.IsNullOrEmpty(node.Text))
             {

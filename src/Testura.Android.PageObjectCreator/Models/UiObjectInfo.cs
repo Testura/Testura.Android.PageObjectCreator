@@ -26,6 +26,11 @@ namespace Testura.Android.PageObjectCreator.Models
         public IList<AttributeTags> FindWith { get; set; }
 
         /// <summary>
+        /// Gets or sets the optimal with
+        /// </summary>
+        public OptimalWith Optimal { get; set; }
+
+        /// <summary>
         /// Gets or sets the find string that contains all our selected withs
         /// </summary>
         public string FindWithString { get; set; }
@@ -36,6 +41,11 @@ namespace Testura.Android.PageObjectCreator.Models
         /// <returns>Correct property data</returns>
         public string GetFindBy()
         {
+            if (Optimal != null)
+            {
+                return "Optimal";
+            }
+
             var stringBuilder = new StringBuilder();
             foreach (var attributeTagse in FindWith)
             {

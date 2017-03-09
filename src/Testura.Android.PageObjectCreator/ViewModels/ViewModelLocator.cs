@@ -32,6 +32,7 @@ namespace Testura.Android.PageObjectCreator.ViewModels
             SimpleIoc.Default.Register<IDialogService, DialogService>();
             SimpleIoc.Default.Register<IFileService, FileService>();
             SimpleIoc.Default.Register<IScreenService, ScreenService>();
+            SimpleIoc.Default.Register<ICodeService, CodeService>();
         }
 
         public MainViewModel MainViewModel => ServiceLocator.Current.GetInstance<MainViewModel>();

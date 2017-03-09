@@ -13,6 +13,6 @@ namespace Testura.Android.PageObjectCreator.Services
         /// <param name="point">Points to check</param>
         /// <param name="dump">the xml dump</param>
         /// <returns>All intersected android elements</returns>
-        IList<Node> GetNodes(Point point, string dump);
+        IList<Node> GetNodes(Point point, Node node);
     }
 }

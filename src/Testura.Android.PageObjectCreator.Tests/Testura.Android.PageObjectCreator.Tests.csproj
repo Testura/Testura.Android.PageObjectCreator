@@ -87,6 +87,7 @@
     <Compile Include="Models\PageObjectTests.cs" />
     <Compile Include="Models\UiObjectInfoTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CodeServiceTests.cs" />
     <Compile Include="Services\DeviceServiceTests.cs" />
     <Compile Include="Services\DialogServiceTests.cs" />
     <Compile Include="Services\DumpServiceTests.cs" />

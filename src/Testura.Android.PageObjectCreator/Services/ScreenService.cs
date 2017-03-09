@@ -22,14 +22,28 @@ namespace Testura.Android.PageObjectCreator.Services
         /// <param name="point">Points to check</param>
         /// <param name="dump">the xml dump</param>
         /// <returns>All intersected android elements</returns>
-        public IList<Node> GetNodes(Point point, string dump)
+        public IList<Node> GetNodes(Point point, Node node)
         {
-            var nodes = _dumpService.ParseDump(dump);
-            var matchingElements = nodes.Where(n => n.PointInsideBounds(point)).ToList();
+            var nodes = new List<Node>();
+             FindNode(point, node, nodes);
 
-            matchingElements.Sort((ae1, ae2) => ae1.Area().CompareTo(ae2.Area()));
+            nodes.Sort((ae1, ae2) => ae1.Area().CompareTo(ae2.Area()));
 
-            return matchingElements;
+            return nodes;
+        }
+
+        private void FindNode(Point point, Node node, IList<Node> foundNodes)
+        {
+            if (node.PointInsideBounds(point))
+            {
+                foundNodes.Add(node);
+            }
+
+            foreach (var nodeChild in node.Children)
+            {
+                FindNode(point, nodeChild, foundNodes);
+            }
+
         }
     }
 }

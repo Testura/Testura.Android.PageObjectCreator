@@ -18,6 +18,7 @@ namespace Testura.Android.PageObjectCreator.ViewModels
         private readonly IFileService _fileService;
         private readonly IScreenService _screenService;
         private readonly IDialogService _dialogService;
+        private Node _node;
 
         public ScreenViewModel(IFileService fileService, IScreenService screenService, IDialogService dialogService)
         {
@@ -47,8 +48,7 @@ namespace Testura.Android.PageObjectCreator.ViewModels
 
         public Node GetNodes(Point point, string dumpPath)
         {
-            var lines = _fileService.ReadAllLinesFromFile(dumpPath);
-            var nodes = _screenService.GetNodes(point, string.Join(string.Empty, lines));
+            var nodes = _screenService.GetNodes(point, _node);
             if (nodes.Any())
             {
                 var node = nodes.First();
@@ -101,6 +101,7 @@ namespace Testura.Android.PageObjectCreator.ViewModels
         {
             IsDumpingScreen = false;
             LoadImage?.Invoke(this, message.DumpInfo);
+            _node = message.Node;
         }
 
         private void OnStartedDumpingScreen(StartedDumpScreenMessage message)

@@ -72,11 +72,11 @@
                        Grid.Row="0"
                        Grid.Column="0" />
                 <TabControl Grid.Row="1" Margin="5, 0, 5, 0" Visibility="{Binding IsEditEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <TabItem Header="Page object">
-                        <views:PageObjectView />
-                    </TabItem>
                     <TabItem Header="Hierarchy">
                         <views:HierarchyView />
+                    </TabItem>
+                    <TabItem Header="Page object">
+                        <views:PageObjectView />
                     </TabItem>
                     <TabItem Header="Code">
                         <views:CodeView />

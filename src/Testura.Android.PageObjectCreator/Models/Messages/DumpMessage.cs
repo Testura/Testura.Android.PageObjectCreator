@@ -1,4 +1,6 @@
-﻿namespace Testura.Android.PageObjectCreator.Models.Messages
+﻿using Testura.Android.Device.Ui.Nodes.Data;
+
+namespace Testura.Android.PageObjectCreator.Models.Messages
 {
     /// <summary>
     /// Message sent after a screen dump
@@ -6,5 +8,7 @@
     public class DumpMessage
     {
         public AndroidDumpInfo DumpInfo { get; set; }
+
+        public Node Node { get; set; }
     }
 }
