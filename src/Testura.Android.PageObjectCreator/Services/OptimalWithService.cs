@@ -27,6 +27,8 @@ namespace Testura.Android.PageObjectCreator.Services
         public OptimalWith GetOptimalWith(Node selectedNode, IList<Node> allNode)
         {
             var combinations = ItemCombinations(_attributesPriority, 1);
+            combinations.Remove(combinations.FirstOrDefault(c => c.Count == 1 && c.First() == AttributeTags.Text));
+            combinations.Remove(combinations.FirstOrDefault(c => c.Count == 1 && c.First() == AttributeTags.Index));
 
             foreach (var combination in combinations)
             {
@@ -56,14 +58,14 @@ namespace Testura.Android.PageObjectCreator.Services
 
         private bool CheckAttribute(Node node, IList<PropertyInfo> properties, IList<Node> allNodes)
         {
-            if (allNodes.Count == 1)
-            {
-                return true; 
-            }
-
             if (properties.Any(p => string.IsNullOrEmpty(p.GetValue(node)?.ToString())))
             {
                 return false;
+            }
+
+            if (allNodes.Count == 1)
+            {
+                return true;
             }
 
             if (allNodes.Any(n =>
@@ -76,7 +78,7 @@ namespace Testura.Android.PageObjectCreator.Services
                 return properties.All(p =>
                 {
                     var value = p.GetValue(n)?.ToString();
-                    if (value == null)
+                    if (string.IsNullOrEmpty(value))
                     {
                         return false;
                     }

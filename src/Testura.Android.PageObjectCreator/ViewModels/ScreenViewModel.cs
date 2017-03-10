@@ -8,6 +8,7 @@ using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.PageObjectCreator.Models;
 using Testura.Android.PageObjectCreator.Models.Messages;
 using Testura.Android.PageObjectCreator.Services;
+using Testura.Android.PageObjectCreator.Util.Extensions;
 using Testura.Android.Util;
 
 namespace Testura.Android.PageObjectCreator.ViewModels
@@ -18,13 +19,15 @@ namespace Testura.Android.PageObjectCreator.ViewModels
         private readonly IFileService _fileService;
         private readonly IScreenService _screenService;
         private readonly IDialogService _dialogService;
+        private readonly IOptimalWithService _optimalWithService;
         private Node _node;
 
-        public ScreenViewModel(IFileService fileService, IScreenService screenService, IDialogService dialogService)
+        public ScreenViewModel(IFileService fileService, IScreenService screenService, IDialogService dialogService, IOptimalWithService optimalWithService)
         {
             _fileService = fileService;
             _screenService = screenService;
             _dialogService = dialogService;
+            _optimalWithService = optimalWithService;
             ShouldShowInfoMessage = true;
             MessengerInstance.Register<DumpMessage>(this, OnNewDump);
             MessengerInstance.Register<StartedDumpScreenMessage>(this, OnStartedDumpingScreen);
@@ -75,8 +78,10 @@ namespace Testura.Android.PageObjectCreator.ViewModels
                 {
                     Name = name,
                     Node = node,
-                    FindWith = new List<AttributeTags>()
+                    FindWith = new List<AttributeTags>(),
+                    Optimal = _optimalWithService.GetOptimalWith(node, _node.GetAsList())
                 };
+                uiNodeInfo.FindWithString = "Automatic";
                 MessengerInstance.Send(new AddUiObjectInfoMessage { UiNodeInfo = uiNodeInfo });
                 return true;
             }

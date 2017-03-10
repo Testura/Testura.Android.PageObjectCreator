@@ -41,11 +41,6 @@ namespace Testura.Android.PageObjectCreator.Models
         /// <returns>Correct property data</returns>
         public string GetFindBy()
         {
-            if (Optimal != null)
-            {
-                return "Optimal";
-            }
-
             var stringBuilder = new StringBuilder();
             foreach (var attributeTagse in FindWith)
             {

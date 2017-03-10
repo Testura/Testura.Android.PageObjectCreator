@@ -1,4 +1,6 @@
-﻿using Testura.Android.PageObjectCreator.Models;
+﻿using System.Collections.Generic;
+using Testura.Android.Device.Ui.Nodes.Data;
+using Testura.Android.PageObjectCreator.Models;
 
 namespace Testura.Android.PageObjectCreator.Services
 {
@@ -14,7 +16,7 @@ namespace Testura.Android.PageObjectCreator.Services
         /// Show the edit with dialog
         /// </summary>
         /// <param name="uiObjectInfo">UiObjected to edit withs for</param>
-        void ShowWithDialog(UiObjectInfo uiObjectInfo);
+        void ShowWithDialog(UiObjectInfo uiObjectInfo, IList<Node> nodes);
 
         /// <summary>
         /// Show an error dialog

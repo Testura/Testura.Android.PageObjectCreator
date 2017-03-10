@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Testura.Android.PageObjectCreator.Dialogs;
 using NUnit.Framework;
+using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.PageObjectCreator.Models;
 
 namespace Testura.Android.PageObjectCreator.Tests.Dialogs
@@ -13,7 +15,7 @@ namespace Testura.Android.PageObjectCreator.Tests.Dialogs
         [SetUp]
         public void SetUp()
         {
-            withDialog = new WithDialog(null);
+            withDialog = new WithDialog(null, new List<Node>());
         }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using Testura.Android.Device.Ui.Nodes.Data;
-using Testura.Android.PageObjectCreator.Models;
 using Testura.Android.PageObjectCreator.Util.Extensions;
 
 namespace Testura.Android.PageObjectCreator.Services

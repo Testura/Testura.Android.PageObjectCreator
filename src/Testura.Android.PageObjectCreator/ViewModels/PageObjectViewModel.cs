@@ -1,20 +1,25 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using PropertyChanged;
+using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.PageObjectCreator.Models;
 using Testura.Android.PageObjectCreator.Models.Messages;
 using Testura.Android.PageObjectCreator.Services;
+using Testura.Android.PageObjectCreator.Util.Extensions;
 
 namespace Testura.Android.PageObjectCreator.ViewModels
 {
     [ImplementPropertyChanged]
     public class PageObjectViewModel : ViewModelBase
     {
+        private IList<Node> _nodes;
         private readonly IDialogService _dialogService;
 
         public PageObjectViewModel(IDialogService dialogService)
         {
+            _nodes = new List<Node>();
             _dialogService = dialogService;
             MessengerInstance.Register<DumpMessage>(this, OnDump);
             MessengerInstance.Register<AddUiObjectInfoMessage>(this, OnAddUiObjectInfo);
@@ -43,11 +48,12 @@ namespace Testura.Android.PageObjectCreator.ViewModels
         {
             PageObject.Activity = message.DumpInfo.Activity;
             PageObject.Package = message.DumpInfo.Package;
+            _nodes = message.Node.GetAsList();
         }
 
         private void EditWiths(UiObjectInfo obj)
         {
-            _dialogService.ShowWithDialog(obj);
+            _dialogService.ShowWithDialog(obj, _nodes);
             SendPageObjectChanged();
         }
 

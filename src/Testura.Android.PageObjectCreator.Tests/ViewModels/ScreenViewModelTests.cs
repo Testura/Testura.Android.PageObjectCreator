@@ -11,6 +11,7 @@ namespace Testura.Android.PageObjectCreator.Tests.ViewModels
         private Mock<IFileService> fileServiceMock;
         private Mock<IScreenService> screenServiceMock;
         private Mock<IDialogService> dialogServiceMock;
+        private Mock<IOptimalWithService> _optimalWithServiceMock; 
         private ScreenViewModel screenViewModel;
 
         [SetUp]
@@ -19,7 +20,8 @@ namespace Testura.Android.PageObjectCreator.Tests.ViewModels
             fileServiceMock = new Mock<IFileService>();
             screenServiceMock = new Mock<IScreenService>();
             dialogServiceMock = new Mock<IDialogService>();
-            screenViewModel = new ScreenViewModel(fileServiceMock.Object, screenServiceMock.Object, dialogServiceMock.Object);
+            _optimalWithServiceMock = new Mock<IOptimalWithService>();
+            screenViewModel = new ScreenViewModel(fileServiceMock.Object, screenServiceMock.Object, dialogServiceMock.Object, _optimalWithServiceMock.Object);
         }
     }
 }

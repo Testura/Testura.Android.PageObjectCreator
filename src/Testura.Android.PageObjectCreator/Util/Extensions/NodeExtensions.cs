@@ -34,5 +34,27 @@ namespace Testura.Android.PageObjectCreator.Util.Extensions
             var elementBouds = node.GetNodeBounds();
             return (elementBouds[1].X - elementBouds[0].X) * (elementBouds[1].Y - elementBouds[0].Y);
         }
+
+
+        /// <summary>
+        /// Get current node and all children as a list
+        /// </summary>
+        /// <returns>Current node and all children as a list</returns>
+        public static IList<Node> GetAsList(this Node node)
+        {
+            var nodes = new List<Node>();
+            void GetNodes(Node currentNode)
+            {
+                nodes.Add(currentNode);
+
+                foreach (var child in currentNode.Children)
+                {
+                    GetNodes(child);
+                }
+            }
+
+            GetNodes(node);
+            return nodes;
+        }
     }
 }

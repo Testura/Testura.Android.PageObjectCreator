@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight.CommandWpf;
 using PropertyChanged;
+using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.PageObjectCreator.Models;
+using Testura.Android.PageObjectCreator.Services;
 using Testura.Android.Util;
 using Attribute = Testura.Android.PageObjectCreator.Models.Attribute;
 
@@ -11,8 +14,13 @@ namespace Testura.Android.PageObjectCreator.ViewModels
     [ImplementPropertyChanged]
     public class WithViewModel
     {
-        public WithViewModel()
+        private IList<Node> _allNodes;
+        private readonly IOptimalWithService _optimalWithService;
+
+        public WithViewModel(IOptimalWithService optimalWithService)
         {
+            _allNodes = new List<Node>();
+            _optimalWithService = optimalWithService;
             NotUsedWiths = new ObservableCollection<AttributeTags>();
             UsedWiths = new ObservableCollection<AttributeTags>();
             AddCommand = new RelayCommand<AttributeTags>(AddWith);
@@ -23,6 +31,8 @@ namespace Testura.Android.PageObjectCreator.ViewModels
         }
 
         public event EventHandler CloseWindow;
+
+        public bool UseUniqueWiths { get; set; }
 
         public ObservableCollection<AttributeTags> NotUsedWiths { get; set; }
 
@@ -40,9 +50,11 @@ namespace Testura.Android.PageObjectCreator.ViewModels
 
         public ObservableCollection<Attribute> Attributes { get; set; }
 
-        public void SetCurrentUiObjectInfo(UiObjectInfo uiObjectInfo)
+        public void SetCurrentUiObjectInfo(UiObjectInfo uiObjectInfo, IList<Node> allNodes)
         {
+            _allNodes = new List<Node>(allNodes);
             UiObjectInfo = uiObjectInfo;
+            UseUniqueWiths = uiObjectInfo.Optimal != null;
             NotUsedWiths.Clear();
             UsedWiths.Clear();
             LoadWiths();
@@ -117,7 +129,16 @@ namespace Testura.Android.PageObjectCreator.ViewModels
                 UiObjectInfo.FindWith.Add(with);
             }
 
-            UiObjectInfo.FindWithString = string.Join(", ", UiObjectInfo.FindWith);
+            if (UseUniqueWiths)
+            {
+                UiObjectInfo.Optimal = _optimalWithService.GetOptimalWith(UiObjectInfo.Node, _allNodes);
+            }
+            else
+            {
+                UiObjectInfo.Optimal = null;
+            }
+
+            UiObjectInfo.FindWithString = UiObjectInfo.Optimal != null ? "Automatic" : string.Join(", ", UiObjectInfo.FindWith);
             Close();
         }
 

@@ -30,6 +30,15 @@ namespace Testura.Android.PageObjectCreator.Tests.Services
         }
 
         [Test]
+        public void GetOptimalWith_WhenOnlyHavingOneNodeResourceIdIsEmpty_ShouldNotGetResourceId()
+        {
+            var node = new Node(new XElement("node", new XAttribute("resource-id", ""), new XAttribute("package", "test")), null);
+            var withs = _optimalWithService.GetOptimalWith(node, new List<Node>() { node });
+            Assert.AreEqual(1, withs.Withs.Count);
+            Assert.AreEqual(AttributeTags.Package, withs.Withs.First());
+        }
+
+        [Test]
         public void GetOptimalWith_WhenOnlyHavingTwoWithSameResoruceId_ShouldGetPackage()
         {
             var node = new Node(new XElement("node", new XAttribute("resource-id", "test"), new XAttribute("package", "test")), null);
