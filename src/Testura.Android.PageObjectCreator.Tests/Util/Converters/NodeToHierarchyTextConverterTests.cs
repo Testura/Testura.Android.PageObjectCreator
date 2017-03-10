@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Util.Converters
     [TestFixture]
     public class NodeToHierarchyTextConverterTests
     {
-        private NodeToHierarchyTextConverter nodeToHierarchyTextConverter;
+        private NodeToHierarchyTextConverter _nodeToHierarchyTextConverter;
 
         [SetUp]
         public void SetUp()
         {
-            nodeToHierarchyTextConverter = new NodeToHierarchyTextConverter();
+            _nodeToHierarchyTextConverter = new NodeToHierarchyTextConverter();
         }
     }
 }

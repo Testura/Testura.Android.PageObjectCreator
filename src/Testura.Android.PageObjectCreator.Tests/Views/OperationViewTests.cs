@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Views
     [TestFixture]
     public class OperationViewTests
     {
-        private OperationView operationView;
+        private OperationView _operationView;
 
         [SetUp]
         public void SetUp()
         {
-            operationView = new OperationView();
+            _operationView = new OperationView();
         }
     }
 }

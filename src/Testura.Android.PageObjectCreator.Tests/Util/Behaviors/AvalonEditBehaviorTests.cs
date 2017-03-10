@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Util.Behaviors
     [TestFixture]
     public class AvalonEditBehaviorTests
     {
-        private AvalonEditBehavior avalonEditBehavior;
+        private AvalonEditBehavior _avalonEditBehavior;
 
         [SetUp]
         public void SetUp()
         {
-            avalonEditBehavior = new AvalonEditBehavior();
+            _avalonEditBehavior = new AvalonEditBehavior();
         }
     }
 }

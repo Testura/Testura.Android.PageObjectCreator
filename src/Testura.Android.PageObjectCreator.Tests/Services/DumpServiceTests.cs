@@ -8,14 +8,14 @@ namespace Testura.Android.PageObjectCreator.Tests.Services
     [TestFixture]
     public class DumpServiceTests
     {
-        private Mock<ITerminal> terminalMock;
-        private DumpService dumpService;
+        private Mock<ITerminal> _terminalMock;
+        private DumpService _dumpService;
 
         [SetUp]
         public void SetUp()
         {
-            terminalMock = new Mock<ITerminal>();
-            dumpService = new DumpService(terminalMock.Object);
+            _terminalMock = new Mock<ITerminal>();
+            _dumpService = new DumpService(_terminalMock.Object);
         }
     }
 }

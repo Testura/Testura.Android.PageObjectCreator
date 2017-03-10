@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Models.Messages
     [TestFixture]
     public class AddUiObjectInfoMessageTests
     {
-        private AddUiObjectInfoMessage addUiObjectInfoMessage;
+        private AddUiObjectInfoMessage _addUiObjectInfoMessage;
 
         [SetUp]
         public void SetUp()
         {
-            addUiObjectInfoMessage = new AddUiObjectInfoMessage();
+            _addUiObjectInfoMessage = new AddUiObjectInfoMessage();
         }
     }
 }

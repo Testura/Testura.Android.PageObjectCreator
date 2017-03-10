@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Util
     [TestFixture]
     public class TerminalTests
     {
-        private Terminal terminal;
+        private Terminal _terminal;
 
         [SetUp]
         public void SetUp()
         {
-            terminal = new Terminal();
+            _terminal = new Terminal();
         }
     }
 }

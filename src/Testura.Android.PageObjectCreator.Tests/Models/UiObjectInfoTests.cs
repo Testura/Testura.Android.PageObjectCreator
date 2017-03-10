@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Models
     [TestFixture]
     public class UiObjectInfoTests
     {
-        private UiObjectInfo uiObjectInfo;
+        private UiObjectInfo _uiObjectInfo;
 
         [SetUp]
         public void SetUp()
         {
-            uiObjectInfo = new UiObjectInfo();
+            _uiObjectInfo = new UiObjectInfo();
         }
     }
 }

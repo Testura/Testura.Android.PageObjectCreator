@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Util.Converters
     [TestFixture]
     public class InvertBooleanConverterTests
     {
-        private InvertBooleanConverter invertBooleanConverter;
+        private InvertBooleanConverter _invertBooleanConverter;
 
         [SetUp]
         public void SetUp()
         {
-            invertBooleanConverter = new InvertBooleanConverter();
+            _invertBooleanConverter = new InvertBooleanConverter();
         }
     }
 }

@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Util.Converters
     [TestFixture]
     public class BooleanToVisibilityInvertedConverterTests
     {
-        private BooleanToVisibilityInvertedConverter booleanToVisibilityInvertedConverter;
+        private BooleanToVisibilityInvertedConverter _booleanToVisibilityInvertedConverter;
 
         [SetUp]
         public void SetUp()
         {
-            booleanToVisibilityInvertedConverter = new BooleanToVisibilityInvertedConverter();
+            _booleanToVisibilityInvertedConverter = new BooleanToVisibilityInvertedConverter();
         }
     }
 }

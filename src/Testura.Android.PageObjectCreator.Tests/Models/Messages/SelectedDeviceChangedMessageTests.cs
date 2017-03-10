@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Models.Messages
     [TestFixture]
     public class SelectedDeviceChangedMessageTests
     {
-        private SelectedDeviceChangedMessage selectedDeviceChangedMessage;
+        private SelectedDeviceChangedMessage _selectedDeviceChangedMessage;
 
         [SetUp]
         public void SetUp()
         {
-            selectedDeviceChangedMessage = new SelectedDeviceChangedMessage();
+            _selectedDeviceChangedMessage = new SelectedDeviceChangedMessage();
         }
     }
 }

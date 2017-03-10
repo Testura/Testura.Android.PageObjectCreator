@@ -7,12 +7,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Dialogs
     [TestFixture]
     public class ErrorDialogTests
     {
-        private ErrorDialog errorDialog;
+        private ErrorDialog _errorDialog;
 
         [SetUp]
         public void SetUp()
         {
-            errorDialog = new ErrorDialog(string.Empty);
+            _errorDialog = new ErrorDialog(string.Empty);
         }
     }
 }

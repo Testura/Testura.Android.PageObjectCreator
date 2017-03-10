@@ -8,14 +8,14 @@ namespace Testura.Android.PageObjectCreator.Tests.ViewModels
     [TestFixture]
     public class DeviceViewModelTests
     {
-        private Mock<IDeviceService> deviceServiceMock;
-        private DeviceViewModel deviceViewModel;
+        private Mock<IDeviceService> _deviceServiceMock;
+        private DeviceViewModel _deviceViewModel;
 
         [SetUp]
         public void SetUp()
         {
-            deviceServiceMock = new Mock<IDeviceService>();
-            deviceViewModel = new DeviceViewModel(deviceServiceMock.Object);
+            _deviceServiceMock = new Mock<IDeviceService>();
+            _deviceViewModel = new DeviceViewModel(_deviceServiceMock.Object);
         }
     }
 }

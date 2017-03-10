@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Views
     [TestFixture]
     public class HierarchyViewTests
     {
-        private HierarchyView hierarchyView;
+        private HierarchyView _hierarchyView;
 
         [SetUp]
         public void SetUp()
         {
-            hierarchyView = new HierarchyView();
+            _hierarchyView = new HierarchyView();
         }
     }
 }

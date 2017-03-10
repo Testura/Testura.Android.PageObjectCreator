@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Models.Messages
     [TestFixture]
     public class RequestDumpMessageTests
     {
-        private RequestDumpMessage requestDumpMessage;
+        private RequestDumpMessage _requestDumpMessage;
 
         [SetUp]
         public void SetUp()
         {
-            requestDumpMessage = new RequestDumpMessage();
+            _requestDumpMessage = new RequestDumpMessage();
         }
     }
 }

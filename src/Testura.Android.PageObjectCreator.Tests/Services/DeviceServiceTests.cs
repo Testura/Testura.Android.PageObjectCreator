@@ -8,14 +8,14 @@ namespace Testura.Android.PageObjectCreator.Tests.Services
     [TestFixture]
     public class DeviceServiceTests
     {
-        private Mock<ITerminal> terminalMock;
-        private DeviceService deviceService;
+        private Mock<ITerminal> _terminalMock;
+        private DeviceService _deviceService;
 
         [SetUp]
         public void SetUp()
         {
-            terminalMock = new Mock<ITerminal>();
-            deviceService = new DeviceService(terminalMock.Object);
+            _terminalMock = new Mock<ITerminal>();
+            _deviceService = new DeviceService(_terminalMock.Object);
         }
     }
 }

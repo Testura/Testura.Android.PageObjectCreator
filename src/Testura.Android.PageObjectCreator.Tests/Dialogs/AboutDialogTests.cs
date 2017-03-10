@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Dialogs
     [TestFixture]
     public class AboutDialogTests
     {
-        private AboutDialog aboutDialog;
+        private AboutDialog _aboutDialog;
 
         [SetUp]
         public void SetUp()
         {
-            aboutDialog = new AboutDialog();
+            _aboutDialog = new AboutDialog();
         }
     }
 }

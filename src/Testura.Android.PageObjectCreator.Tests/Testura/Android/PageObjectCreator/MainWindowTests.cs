@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests
     [TestFixture]
     public class MainWindowTests
     {
-        private MainWindow mainWindow;
+        private MainWindow _mainWindow;
 
         [SetUp]
         public void SetUp()
         {
-            mainWindow = new MainWindow();
+            _mainWindow = new MainWindow();
         }
     }
 }

@@ -16,18 +16,16 @@ namespace Testura.Android.PageObjectCreator.ViewModels
     [ImplementPropertyChanged]
     public class ScreenViewModel : ViewModelBase
     {
-        private readonly IFileService _fileService;
         private readonly IScreenService _screenService;
         private readonly IDialogService _dialogService;
-        private readonly IOptimalWithService _optimalWithService;
-        private Node _node;
+        private readonly IAutoSelectedWithFinderService _autoSelectedWithFinderService;
+        private Node _topNode;
 
-        public ScreenViewModel(IFileService fileService, IScreenService screenService, IDialogService dialogService, IOptimalWithService optimalWithService)
+        public ScreenViewModel(IScreenService screenService, IDialogService dialogService, IAutoSelectedWithFinderService autoSelectedWithFinderService)
         {
-            _fileService = fileService;
             _screenService = screenService;
             _dialogService = dialogService;
-            _optimalWithService = optimalWithService;
+            _autoSelectedWithFinderService = autoSelectedWithFinderService;
             ShouldShowInfoMessage = true;
             MessengerInstance.Register<DumpMessage>(this, OnNewDump);
             MessengerInstance.Register<StartedDumpScreenMessage>(this, OnStartedDumpingScreen);
@@ -51,7 +49,7 @@ namespace Testura.Android.PageObjectCreator.ViewModels
 
         public Node GetNodes(Point point, string dumpPath)
         {
-            var nodes = _screenService.GetNodes(point, _node);
+            var nodes = _screenService.GetNodes(point, _topNode.AllNodes());
             if (nodes.Any())
             {
                 var node = nodes.First();
@@ -79,9 +77,9 @@ namespace Testura.Android.PageObjectCreator.ViewModels
                     Name = name,
                     Node = node,
                     FindWith = new List<AttributeTags>(),
-                    Optimal = _optimalWithService.GetOptimalWith(node, _node.GetAsList())
+                    AutoSelectedWith = _autoSelectedWithFinderService.GetUniqueWiths(node, _topNode.AllNodes()),
+                    DisplayName = "Automatic"
                 };
-                uiNodeInfo.FindWithString = "Automatic";
                 MessengerInstance.Send(new AddUiObjectInfoMessage { UiNodeInfo = uiNodeInfo });
                 return true;
             }
@@ -106,7 +104,7 @@ namespace Testura.Android.PageObjectCreator.ViewModels
         {
             IsDumpingScreen = false;
             LoadImage?.Invoke(this, message.DumpInfo);
-            _node = message.Node;
+            _topNode = message.TopNode;
         }
 
         private void OnStartedDumpingScreen(StartedDumpScreenMessage message)

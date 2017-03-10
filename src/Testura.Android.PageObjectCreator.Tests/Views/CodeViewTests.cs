@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Views
     [TestFixture]
     public class CodeViewTests
     {
-        private CodeView codeView;
+        private CodeView _codeView;
 
         [SetUp]
         public void SetUp()
         {
-            codeView = new CodeView();
+            _codeView = new CodeView();
         }
     }
 }

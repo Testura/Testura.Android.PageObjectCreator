@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.ViewModels
     [TestFixture]
     public class ViewModelLocatorTests
     {
-        private ViewModelLocator viewModelLocator;
+        private ViewModelLocator _viewModelLocator;
 
         [SetUp]
         public void SetUp()
         {
-            viewModelLocator = new ViewModelLocator();
+            _viewModelLocator = new ViewModelLocator();
         }
     }
 }

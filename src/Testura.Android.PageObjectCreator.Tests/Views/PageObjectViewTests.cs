@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Views
     [TestFixture]
     public class PageObjectViewTests
     {
-        private PageObjectView pageObjectView;
+        private PageObjectView _pageObjectView;
 
         [SetUp]
         public void SetUp()
         {
-            pageObjectView = new PageObjectView();
+            _pageObjectView = new PageObjectView();
         }
     }
 }

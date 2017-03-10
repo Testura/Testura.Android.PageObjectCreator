@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using PropertyChanged;
 using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.Util;
@@ -26,44 +24,21 @@ namespace Testura.Android.PageObjectCreator.Models
         public IList<AttributeTags> FindWith { get; set; }
 
         /// <summary>
-        /// Gets or sets the optimal with
+        /// Gets or sets the auto selected with
         /// </summary>
-        public OptimalWith Optimal { get; set; }
+        public AutoSelectedWith AutoSelectedWith { get; set; }
 
         /// <summary>
         /// Gets or sets the find string that contains all our selected withs
         /// </summary>
-        public string FindWithString { get; set; }
+        public string DisplayName { get; set; }
 
         /// <summary>
-        /// Get the correct property data by FindBY
+        /// Update the display name
         /// </summary>
-        /// <returns>Correct property data</returns>
-        public string GetFindBy()
+        public void UpdateDisplayName()
         {
-            var stringBuilder = new StringBuilder();
-            foreach (var attributeTagse in FindWith)
-            {
-                switch (attributeTagse)
-                {
-                    case AttributeTags.ResourceId:
-                        stringBuilder.Append($"ResourceId={Node.ResourceId},");
-                        break;
-
-                    case AttributeTags.ContentDesc:
-                        stringBuilder.Append($"ContentDesc={Node.ContentDesc},");
-                        break;
-
-                    case AttributeTags.Text:
-                        stringBuilder.Append($"Text={Node.Text},");
-                        break;
-
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
-
-            return stringBuilder.Remove(stringBuilder.Length - 1, 1).ToString();
+            DisplayName = AutoSelectedWith != null ? "Automatic" : string.Join(", ", FindWith);
         }
     }
 }

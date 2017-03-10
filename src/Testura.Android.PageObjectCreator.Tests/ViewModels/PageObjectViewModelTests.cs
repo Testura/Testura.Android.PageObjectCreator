@@ -8,14 +8,14 @@ namespace Testura.Android.PageObjectCreator.Tests.ViewModels
     [TestFixture]
     public class PageObjectViewModelTests
     {
-        private Mock<IDialogService> dialogServiceMock;
-        private PageObjectViewModel pageObjectViewModel;
+        private Mock<IDialogService> _dialogServiceMock;
+        private PageObjectViewModel _pageObjectViewModel;
 
         [SetUp]
         public void SetUp()
         {
-            dialogServiceMock = new Mock<IDialogService>();
-            pageObjectViewModel = new PageObjectViewModel(dialogServiceMock.Object);
+            _dialogServiceMock = new Mock<IDialogService>();
+            _pageObjectViewModel = new PageObjectViewModel(_dialogServiceMock.Object);
         }
     }
 }

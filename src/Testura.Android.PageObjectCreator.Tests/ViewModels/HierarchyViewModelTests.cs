@@ -8,12 +8,12 @@ namespace Testura.Android.PageObjectCreator.Tests.ViewModels
     [TestFixture]
     public class HierarchyViewModelTests
     {
-        private HierarchyViewModel hierarchyViewModel;
+        private HierarchyViewModel _hierarchyViewModel;
 
         [SetUp]
         public void SetUp()
         {
-            hierarchyViewModel = new HierarchyViewModel();
+            _hierarchyViewModel = new HierarchyViewModel();
         }
     }
 }

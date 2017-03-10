@@ -8,11 +8,11 @@ using Testura.Android.Util;
 
 namespace Testura.Android.PageObjectCreator.Services
 {
-    public class OptimalWithService : IOptimalWithService
+    public class UniqueWithFinderService : IAutoSelectedWithFinderService
     {
         private readonly IList<AttributeTags> _attributesPriority;
 
-        public OptimalWithService()
+        public UniqueWithFinderService()
         {
             _attributesPriority = new List<AttributeTags>
             {
@@ -24,9 +24,11 @@ namespace Testura.Android.PageObjectCreator.Services
             };
         }
 
-        public OptimalWith GetOptimalWith(Node selectedNode, IList<Node> allNode)
+        public AutoSelectedWith GetUniqueWiths(Node selectedNode, IList<Node> allNode)
         {
-            var combinations = ItemCombinations(_attributesPriority, 1);
+            var combinations = GetAllCombinations(_attributesPriority);
+
+            // We can not use only text or index.
             combinations.Remove(combinations.FirstOrDefault(c => c.Count == 1 && c.First() == AttributeTags.Text));
             combinations.Remove(combinations.FirstOrDefault(c => c.Count == 1 && c.First() == AttributeTags.Index));
 
@@ -41,16 +43,16 @@ namespace Testura.Android.PageObjectCreator.Services
 
                 if (CheckAttribute(selectedNode, properties, allNode))
                 {
-                    return new OptimalWith {Withs = new List<AttributeTags>(combination)};
+                    return new AutoSelectedWith { Withs = new List<AttributeTags>(combination) };
                 }
             }
 
             if (selectedNode.Parent != null)
             {
-                var optimalParen = GetOptimalWith(selectedNode.Parent, allNode);
-                var thisOptimalWith = GetOptimalWith(selectedNode, selectedNode.Parent.Children);
-                thisOptimalWith.Parent = optimalParen;
-                return thisOptimalWith;
+                var uniqueParent = GetUniqueWiths(selectedNode.Parent, allNode);
+                var currentNodeUniqueWiths = GetUniqueWiths(selectedNode, selectedNode.Parent.Children);
+                currentNodeUniqueWiths.Parent = uniqueParent;
+                return currentNodeUniqueWiths;
             }
 
             throw new Exception("Failed to find any unique withs");
@@ -93,7 +95,7 @@ namespace Testura.Android.PageObjectCreator.Services
             return true;
         }
 
-        private IList<IList<T>> ItemCombinations<T>(IList<T> inputList, int minimumItems = 1)
+        private IList<IList<T>> GetAllCombinations<T>(IList<T> inputList, int minimumItems = 1)
         {
             var nonEmptyCombinations = (int)Math.Pow(2, inputList.Count) - 1;
             var listOfLists = new List<IList<T>>(nonEmptyCombinations + 1);

@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Models.Messages
     [TestFixture]
     public class SelectedHierarchyNodeMesssageTests
     {
-        private SelectedHierarchyNodeMesssage selectedHierarchyNodeMesssage;
+        private SelectedHierarchyNodeMesssage _selectedHierarchyNodeMesssage;
 
         [SetUp]
         public void SetUp()
         {
-            selectedHierarchyNodeMesssage = new SelectedHierarchyNodeMesssage();
+            _selectedHierarchyNodeMesssage = new SelectedHierarchyNodeMesssage();
         }
     }
 }

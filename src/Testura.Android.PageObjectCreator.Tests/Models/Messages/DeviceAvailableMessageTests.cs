@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Models.Messages
     [TestFixture]
     public class DeviceAvailableMessageTests
     {
-        private DeviceAvailableMessage deviceAvailableMessage;
+        private DeviceAvailableMessage _deviceAvailableMessage;
 
         [SetUp]
         public void SetUp()
         {
-            deviceAvailableMessage = new DeviceAvailableMessage();
+            _deviceAvailableMessage = new DeviceAvailableMessage();
         }
     }
 }

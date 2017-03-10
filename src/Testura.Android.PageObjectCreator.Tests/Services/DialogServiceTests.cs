@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Services
     [TestFixture]
     public class DialogServiceTests
     {
-        private DialogService dialogService;
+        private DialogService _dialogService;
 
         [SetUp]
         public void SetUp()
         {
-            dialogService = new DialogService();
+            _dialogService = new DialogService();
         }
     }
 }

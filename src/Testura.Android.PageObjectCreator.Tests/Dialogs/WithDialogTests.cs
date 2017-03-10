@@ -9,13 +9,14 @@ namespace Testura.Android.PageObjectCreator.Tests.Dialogs
     [TestFixture]
     public class WithDialogTests
     {
-        private UiObjectInfo uiObjectInfo;
-        private WithDialog withDialog;
+        private UiObjectInfo _uiObjectInfo;
+        private WithDialog _withDialog;
 
         [SetUp]
         public void SetUp()
         {
-            withDialog = new WithDialog(null, new List<Node>());
+            _uiObjectInfo = new UiObjectInfo();
+            _withDialog = new WithDialog(_uiObjectInfo, new List<Node>());
         }
     }
 }

@@ -9,6 +9,6 @@ namespace Testura.Android.PageObjectCreator.Models.Messages
     {
         public AndroidDumpInfo DumpInfo { get; set; }
 
-        public Node Node { get; set; }
+        public Node TopNode { get; set; }
     }
 }

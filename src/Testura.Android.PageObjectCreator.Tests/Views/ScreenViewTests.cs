@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Views
     [TestFixture]
     public class ScreenViewTests
     {
-        private ScreenView screenView;
+        private ScreenView _screenView;
 
         [SetUp]
         public void SetUp()
         {
-            screenView = new ScreenView();
+            _screenView = new ScreenView();
         }
     }
 }

@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Models
     [TestFixture]
     public class AndroidDumpInfoTests
     {
-        private AndroidDumpInfo androidDumpInfo;
+        private AndroidDumpInfo _androidDumpInfo;
 
         [SetUp]
         public void SetUp()
         {
-            androidDumpInfo = new AndroidDumpInfo();
+            _androidDumpInfo = new AndroidDumpInfo();
         }
     }
 }

@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Models.Messages
     [TestFixture]
     public class UiObjectInfoRemovedMessageTests
     {
-        private UiObjectInfoRemovedMessage uiObjectInfoRemovedMessage;
+        private UiObjectInfoRemovedMessage _uiObjectInfoRemovedMessage;
 
         [SetUp]
         public void SetUp()
         {
-            uiObjectInfoRemovedMessage = new UiObjectInfoRemovedMessage();
+            _uiObjectInfoRemovedMessage = new UiObjectInfoRemovedMessage();
         }
     }
 }

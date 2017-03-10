@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Services
     [TestFixture]
     public class FileServiceTests
     {
-        private FileService fileService;
+        private FileService _fileService;
 
         [SetUp]
         public void SetUp()
         {
-            fileService = new FileService();
+            _fileService = new FileService();
         }
     }
 }

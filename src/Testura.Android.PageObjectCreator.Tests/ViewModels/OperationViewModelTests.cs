@@ -8,18 +8,18 @@ namespace Testura.Android.PageObjectCreator.Tests.ViewModels
     [TestFixture]
     public class OperationViewModelTests
     {
-        private Mock<IDumpService> dumpServiceMock;
-        private Mock<IFileService> fileServiceMock;
-        private Mock<IDialogService> dialogServiceMock;
-        private OperationViewModel operationViewModel;
+        private Mock<IDumpService> _dumpServiceMock;
+        private Mock<IFileService> _fileServiceMock;
+        private Mock<IDialogService> _dialogServiceMock;
+        private OperationViewModel _operationViewModel;
 
         [SetUp]
         public void SetUp()
         {
-            dumpServiceMock = new Mock<IDumpService>();
-            dialogServiceMock = new Mock<IDialogService>();
-            fileServiceMock = new Mock<IFileService>();
-            operationViewModel = new OperationViewModel(dumpServiceMock.Object, fileServiceMock.Object, dialogServiceMock.Object);
+            _dumpServiceMock = new Mock<IDumpService>();
+            _dialogServiceMock = new Mock<IDialogService>();
+            _fileServiceMock = new Mock<IFileService>();
+            _operationViewModel = new OperationViewModel(_dumpServiceMock.Object, _fileServiceMock.Object, _dialogServiceMock.Object);
         }
     }
 }

@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Views
     [TestFixture]
     public class DeviceViewTests
     {
-        private DeviceView deviceView;
+        private DeviceView _deviceView;
 
         [SetUp]
         public void SetUp()
         {
-            deviceView = new DeviceView();
+            _deviceView = new DeviceView();
         }
     }
 }

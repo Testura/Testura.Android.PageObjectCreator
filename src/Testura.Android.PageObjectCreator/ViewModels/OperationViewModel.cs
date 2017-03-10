@@ -44,7 +44,7 @@ namespace Testura.Android.PageObjectCreator.ViewModels
                 var dumpInformation = await _dumpService.DumpScreenAsync(_serial);
                 var lines = _fileService.ReadAllLinesFromFile(dumpInformation.DumpPath);
                 var node = _dumpService.ParseDumpAsTree(string.Join(string.Empty, lines));
-                MessengerInstance.Send(new DumpMessage { DumpInfo = dumpInformation, Node = node });
+                MessengerInstance.Send(new DumpMessage { DumpInfo = dumpInformation, TopNode = node });
                 IsGoToActivityEnabled = true;
             }
             catch (Exception)

@@ -7,14 +7,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Services
     [TestFixture]
     public class ScreenServiceTests
     {
-        private Mock<IDumpService> dumpServiceMock;
-        private ScreenService screenService;
+        private ScreenService _screenService;
 
         [SetUp]
         public void SetUp()
         {
-            dumpServiceMock = new Mock<IDumpService>();
-            screenService = new ScreenService(dumpServiceMock.Object);
+            _screenService = new ScreenService();
         }
     }
 }

@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Models
     [TestFixture]
     public class AttributeTests
     {
-        private Attribute attribute;
+        private Attribute _attribute;
 
         [SetUp]
         public void SetUp()
         {
-            attribute = new Attribute(string.Empty, string.Empty);
+            _attribute = new Attribute(string.Empty, string.Empty);
         }
     }
 }

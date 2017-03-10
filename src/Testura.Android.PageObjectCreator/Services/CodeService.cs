@@ -24,63 +24,70 @@ namespace Testura.Android.PageObjectCreator.Services
     public class CodeService : ICodeService
     {
         private const string DeviceName = "device";
-        private CodeSaver _codeSaver;
+        private readonly CodeSaver _codeSaver;
 
         public CodeService()
         {
             _codeSaver = new CodeSaver();
         }
 
+        /// <summary>
+        /// Generate the class, fields and constructor for a page object
+        /// </summary>
+        /// <param name="pageObejctName">Name of the new page object</param>
+        /// <param name="namespace">Name of the namespace to generate</param>
+        /// <param name="uiObjects">UiObject inside the class</param>
+        /// <returns>The generated code as a string</returns>
         public string GeneratePageObject(string pageObejctName, string @namespace, IEnumerable<UiObjectInfo> uiObjects)
         {
             var fields = new List<Field>();
             var statements = new List<StatementSyntax>();
 
-            fields.Add(new Field(DeviceName, typeof(IAndroidDevice), new[] {Modifiers.Private}));
-            statements.Add(Statement.Declaration.Assign(new VariableReference("this", new MemberReference(DeviceName)),
-                new VariableReference("device")));
+            fields.Add(new Field(DeviceName, typeof(IAndroidDevice), new[] { Modifiers.Private }));
+            statements.Add(Statement.Declaration.Assign(new VariableReference("this", new MemberReference(DeviceName)), new VariableReference("device")));
 
             foreach (var pageObjectUiNode in uiObjects)
             {
-                GenerateUiObject(fields, statements, pageObjectUiNode);
+                var generatedUiObject = GenerateUiObject(pageObjectUiNode);
+                fields.Add(generatedUiObject.field);
+                statements.Add(generatedUiObject.statement);
             }
 
             var classBuilder = new ClassBuilder(pageObejctName, @namespace)
-                .WithUsings("Testura.Android.Device", "Testura.Android.Device.Ui.Objects",
-                    "Testura.Android.Device.Ui.Search")
+                .WithUsings("Testura.Android.Device", "Testura.Android.Device.Ui.Objects", "Testura.Android.Device.Ui.Search")
                 .WithFields(fields.ToArray())
-                .WithConstructor(ConstructorGenerator.Create(pageObejctName,
-                    BodyGenerator.Create(statements.ToArray()), modifiers: new[] {Modifiers.Public},
-                    parameters: new List<Parameter> {new Parameter("device", typeof(IAndroidDevice))}))
+                .WithConstructor(ConstructorGenerator.Create(
+                    pageObejctName,
+                    BodyGenerator.Create(statements.ToArray()),
+                    modifiers: new[] { Modifiers.Public },
+                    parameters: new List<Parameter> { new Parameter("device", typeof(IAndroidDevice)) }))
                 .Build();
             return _codeSaver.SaveCodeAsString(classBuilder);
         }
 
-        private void GenerateUiObject(List<Field> fields, List<StatementSyntax> statements,
-            UiObjectInfo pageObjectUiNode)
+        private(Field field, StatementSyntax statement) GenerateUiObject(UiObjectInfo pageObjectUiNode)
         {
-            fields.Add(new Field(pageObjectUiNode.Name, typeof(UiObject), new[] {Modifiers.Private}));
-            statements.Add(Statement.Declaration.Assign(pageObjectUiNode.Name,
-                new VariableReference(DeviceName,
-                    new MemberReference("Ui",
-                        new MethodReference("CreateUiObject", GenerateWithArgument(pageObjectUiNode))))));
+            var field = new Field(pageObjectUiNode.Name, typeof(UiObject), new[] { Modifiers.Private });
+            var statement = Statement.Declaration.Assign(
+                pageObjectUiNode.Name,
+                new VariableReference(DeviceName, new MemberReference("Ui", new MethodReference("CreateUiObject", GenerateWithArgument(pageObjectUiNode)))));
+            return (field, statement);
         }
 
         private IEnumerable<IArgument> GenerateWithArgument(UiObjectInfo uiObjectInfo)
         {
             var arguments = new List<IArgument>();
+            IList<AttributeTags> withs;
 
-            IList<AttributeTags> withs = null;
-
-            if (uiObjectInfo.Optimal != null)
+            if (uiObjectInfo.AutoSelectedWith != null)
             {
-                if (uiObjectInfo.Optimal.Parent == null)
+                if (uiObjectInfo.AutoSelectedWith.Parent == null)
                 {
-                    withs = uiObjectInfo.Optimal.Withs;
+                    withs = uiObjectInfo.AutoSelectedWith.Withs;
                 }
                 else
                 {
-                    return GenerateOptimalWiths(uiObjectInfo.Optimal);
+                    return GenerateAutoSelectedWiths(uiObjectInfo.AutoSelectedWith);
                 }
             }
             else
@@ -91,88 +98,83 @@ namespace Testura.Android.PageObjectCreator.Services
             foreach (var with in withs)
             {
                 var value = GetNodeValue(uiObjectInfo.Node, with);
-                ValueArgument valueArgument;
-                if (with == AttributeTags.Index)
-                {
-                    valueArgument = new ValueArgument(int.Parse(value));
-                }
-                else
-                {
-                    valueArgument = new ValueArgument(value);
-                }
-
-                arguments.Add(
-                    new ReferenceArgument(new VariableReference("With",
-                        new MethodReference(with.ToString(), new[] {valueArgument}))));
+                var valueArgument = with == AttributeTags.Index ? new ValueArgument(int.Parse(value)) : new ValueArgument(value);
+                arguments.Add(new ReferenceArgument(new VariableReference("With", new MethodReference(with.ToString(), new[] { valueArgument }))));
             }
 
             return arguments;
         }
 
-        private IEnumerable<IArgument> GenerateOptimalWiths(OptimalWith optimal)
+        private IEnumerable<IArgument> GenerateAutoSelectedWiths(AutoSelectedWith autoSelected)
         {
-            if (optimal.Parent.Parent == null)
+            // If it's only one parent create a simple lambda expression without block
+            if (autoSelected.Parent.Parent == null)
             {
                 return new List<IArgument>
                 {
                     new LambdaArgument(
-                        new AndBinaryExpression(GetBinaryExpression(optimal.Parent, true, 1),
-                            GetBinaryExpression(optimal, false, 0)).GetBinaryExpression(), "n")
+                        new AndBinaryExpression(
+                            GetBinaryExpression(autoSelected.Parent, true, 1),
+                            GetBinaryExpression(autoSelected, false, 0)).GetBinaryExpression(),
+                            "n")
                 };
             }
 
-
-
-            var mainIf = Statement.Selection.If(GetBinaryExpression(optimal, false, 0),
+            var generatedIf = Statement.Selection.If(
+                GetBinaryExpression(autoSelected, false, 0),
                 BodyGenerator.Create(Statement.Jump.ReturnTrue()));
 
             return new List<IArgument>
             {
-                new LambdaArgument(BodyGenerator.Create(GenerateParantIfs(optimal.Parent, mainIf, 1), Statement.Jump.ReturnFalse()), "n")
+                new LambdaArgument(BodyGenerator.Create(GenerateParantIfs(autoSelected.Parent, generatedIf, 1), Statement.Jump.ReturnFalse()), "n")
             };
         }
 
-        private StatementSyntax GenerateParantIfs(OptimalWith optimalWith, StatementSyntax child, int depth)
+        private StatementSyntax GenerateParantIfs(AutoSelectedWith autoSelectedWith, StatementSyntax blockStatement, int parentDepth)
         {
-            var myIf = Statement.Selection.If(GetBinaryExpression(optimalWith, true, depth), BodyGenerator.Create(child));
+            var generatedIf = Statement.Selection.If(GetBinaryExpression(autoSelectedWith, true, parentDepth), BodyGenerator.Create(blockStatement));
 
-            if (optimalWith.Parent != null)
+            if (autoSelectedWith.Parent != null)
             {
-                return GenerateParantIfs(optimalWith.Parent, myIf, depth + 1);
+                return GenerateParantIfs(autoSelectedWith.Parent, generatedIf, parentDepth + 1);
             }
 
-            return myIf;
+            return generatedIf;
         }
 
-        private IBinaryExpression GetBinaryExpression(OptimalWith optimal, bool isParent, int depth)
+        private IBinaryExpression GetBinaryExpression(AutoSelectedWith autoSelected, bool isParent, int parentDepth)
         {
             var binaryExpressions = new List<ConditionalBinaryExpression>();
 
-
-            foreach (var attributeTagse in optimal.Withs)
+            foreach (var attributeTagse in autoSelected.Withs)
             {
-                var leftReference = new VariableReference("n", new MemberReference(Enum.GetName(typeof(AttributeTags), attributeTagse)));
+                VariableReference leftReference;
                 if (isParent)
                 {
                     var name = new StringBuilder();
-                    for (int n = 0; n < depth; n++)
+                    for (int n = 0; n < parentDepth; n++)
                     {
                         name.Append("Parent?.");
                     }
 
                     name = name.Remove(name.Length - 1, 1);
 
-                    leftReference = new VariableReference("n",
-    new MemberReference(name.ToString(),
-        new MemberReference(Enum.GetName(typeof(AttributeTags), attributeTagse))));
+                    leftReference = new VariableReference(
+                        "n",
+                        new MemberReference(name.ToString(), new MemberReference(Enum.GetName(typeof(AttributeTags), attributeTagse))));
+                }
+                else
+                {
+                    leftReference = new VariableReference("n", new MemberReference(Enum.GetName(typeof(AttributeTags), attributeTagse)));
                 }
 
-
-                binaryExpressions.Add(new ConditionalBinaryExpression(leftReference,
-                    new ConstantReference(GetNodeValue(optimal.Node, attributeTagse)), ConditionalStatements.Equal));
+                binaryExpressions.Add(new ConditionalBinaryExpression(
+                    leftReference,
+                    new ConstantReference(GetNodeValue(autoSelected.Node, attributeTagse)),
+                    ConditionalStatements.Equal));
             }
 
-            IBinaryExpression finalBinaryExpression = null;
+            IBinaryExpression finalBinaryExpression;
 
             if (binaryExpressions.Count > 1)
             {

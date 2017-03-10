@@ -14,13 +14,13 @@ namespace Testura.Android.PageObjectCreator.ViewModels
     [ImplementPropertyChanged]
     public class WithViewModel
     {
+        private readonly IAutoSelectedWithFinderService _autoSelectedWithFinderService;
         private IList<Node> _allNodes;
-        private readonly IOptimalWithService _optimalWithService;
 
-        public WithViewModel(IOptimalWithService optimalWithService)
+        public WithViewModel(IAutoSelectedWithFinderService autoSelectedWithFinderService)
         {
             _allNodes = new List<Node>();
-            _optimalWithService = optimalWithService;
+            _autoSelectedWithFinderService = autoSelectedWithFinderService;
             NotUsedWiths = new ObservableCollection<AttributeTags>();
             UsedWiths = new ObservableCollection<AttributeTags>();
             AddCommand = new RelayCommand<AttributeTags>(AddWith);
@@ -54,7 +54,7 @@ namespace Testura.Android.PageObjectCreator.ViewModels
         {
             _allNodes = new List<Node>(allNodes);
             UiObjectInfo = uiObjectInfo;
-            UseUniqueWiths = uiObjectInfo.Optimal != null;
+            UseUniqueWiths = uiObjectInfo.AutoSelectedWith != null;
             NotUsedWiths.Clear();
             UsedWiths.Clear();
             LoadWiths();
@@ -131,14 +131,14 @@ namespace Testura.Android.PageObjectCreator.ViewModels
 
             if (UseUniqueWiths)
             {
-                UiObjectInfo.Optimal = _optimalWithService.GetOptimalWith(UiObjectInfo.Node, _allNodes);
+                UiObjectInfo.AutoSelectedWith = _autoSelectedWithFinderService.GetUniqueWiths(UiObjectInfo.Node, _allNodes);
             }
             else
             {
-                UiObjectInfo.Optimal = null;
+                UiObjectInfo.AutoSelectedWith = null;
             }
 
-            UiObjectInfo.FindWithString = UiObjectInfo.Optimal != null ? "Automatic" : string.Join(", ", UiObjectInfo.FindWith);
+            UiObjectInfo.UpdateDisplayName();
             Close();
         }
 

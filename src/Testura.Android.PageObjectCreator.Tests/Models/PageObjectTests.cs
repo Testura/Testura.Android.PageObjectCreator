@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Models
     [TestFixture]
     public class PageObjectTests
     {
-        private PageObject pageObject;
+        private PageObject _pageObject;
 
         [SetUp]
         public void SetUp()
         {
-            pageObject = new PageObject();
+            _pageObject = new PageObject();
         }
     }
 }

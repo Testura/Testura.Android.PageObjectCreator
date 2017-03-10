@@ -101,7 +101,7 @@
                                         Width="*"
                                         />
                     <DataGridTextColumn Header="Select with"
-                                        Binding="{Binding FindWithString}"
+                                        Binding="{Binding DisplayName}"
                                         Width="*"
                                         IsReadOnly="True"/>
                     <DataGridTemplateColumn Width="120">

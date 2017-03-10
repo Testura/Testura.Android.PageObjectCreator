@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Models.Messages
     [TestFixture]
     public class RequestRefreshDeviceListCommandTests
     {
-        private RequestRefreshDeviceListCommand requestRefreshDeviceListCommand;
+        private RequestRefreshDeviceListCommand _requestRefreshDeviceListCommand;
 
         [SetUp]
         public void SetUp()
         {
-            requestRefreshDeviceListCommand = new RequestRefreshDeviceListCommand();
+            _requestRefreshDeviceListCommand = new RequestRefreshDeviceListCommand();
         }
     }
 }

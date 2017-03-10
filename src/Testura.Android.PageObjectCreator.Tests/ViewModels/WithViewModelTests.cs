@@ -8,14 +8,14 @@ namespace Testura.Android.PageObjectCreator.Tests.ViewModels
     [TestFixture]
     public class WithViewModelTests
     {
-        private Mock<IOptimalWithService> _optimalWithServiceMock;
-        private WithViewModel withViewModel;
+        private Mock<IAutoSelectedWithFinderService> _optimalWithServiceMock;
+        private WithViewModel _withViewModel;
 
         [SetUp]
         public void SetUp()
         {
-            _optimalWithServiceMock = new Mock<IOptimalWithService>();
-            withViewModel = new WithViewModel(_optimalWithServiceMock.Object);
+            _optimalWithServiceMock = new Mock<IAutoSelectedWithFinderService>();
+            _withViewModel = new WithViewModel(_optimalWithServiceMock.Object);
         }
     }
 }

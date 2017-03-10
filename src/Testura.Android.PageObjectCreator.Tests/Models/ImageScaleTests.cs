@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Models
     [TestFixture]
     public class ImageScaleTests
     {
-        private ImageScale imageScale;
+        private ImageScale _imageScale;
 
         [SetUp]
         public void SetUp()
         {
-            imageScale = new ImageScale();
+            _imageScale = new ImageScale();
         }
     }
 }

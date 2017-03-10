@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Models.Messages
     [TestFixture]
     public class PageObjectChangedMessageTests
     {
-        private PageObjectChangedMessage pageObjectChangedMessage;
+        private PageObjectChangedMessage _pageObjectChangedMessage;
 
         [SetUp]
         public void SetUp()
         {
-            pageObjectChangedMessage = new PageObjectChangedMessage();
+            _pageObjectChangedMessage = new PageObjectChangedMessage();
         }
     }
 }

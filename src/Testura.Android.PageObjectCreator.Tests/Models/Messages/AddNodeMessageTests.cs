@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Models.Messages
     [TestFixture]
     public class AddNodeMessageTests
     {
-        private AddNodeMessage addNodeMessage;
+        private AddNodeMessage _addNodeMessage;
 
         [SetUp]
         public void SetUp()
         {
-            addNodeMessage = new AddNodeMessage();
+            _addNodeMessage = new AddNodeMessage();
         }
     }
 }

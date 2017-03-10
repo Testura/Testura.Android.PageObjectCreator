@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Models.Messages
     [TestFixture]
     public class StartedDumpScreenMessageTests
     {
-        private StartedDumpScreenMessage startedDumpScreenMessage;
+        private StartedDumpScreenMessage _startedDumpScreenMessage;
 
         [SetUp]
         public void SetUp()
         {
-            startedDumpScreenMessage = new StartedDumpScreenMessage();
+            _startedDumpScreenMessage = new StartedDumpScreenMessage();
         }
     }
 }

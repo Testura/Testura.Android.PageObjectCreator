@@ -6,12 +6,12 @@ namespace Testura.Android.PageObjectCreator.Tests.Dialogs
     [TestFixture]
     public class NameDialogTests
     {
-        private NameDialog nameDialog;
+        private NameDialog _nameDialog;
 
         [SetUp]
         public void SetUp()
         {
-            nameDialog = new NameDialog();
+            _nameDialog = new NameDialog();
         }
     }
 }

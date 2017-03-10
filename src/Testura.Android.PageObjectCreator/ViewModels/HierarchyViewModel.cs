@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -7,7 +6,6 @@ using PropertyChanged;
 using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.PageObjectCreator.Models;
 using Testura.Android.PageObjectCreator.Models.Messages;
-using Testura.Android.PageObjectCreator.Services;
 using Attribute = Testura.Android.PageObjectCreator.Models.Attribute;
 
 namespace Testura.Android.PageObjectCreator.ViewModels
@@ -21,20 +19,10 @@ namespace Testura.Android.PageObjectCreator.ViewModels
             Attributes = new ObservableCollection<Attribute>();
             SelectedItemChangedCommand = new RelayCommand<NodeTreeItem>(SelectedItemChanged);
             AddCommand = new RelayCommand(AddNode, CanAddNode);
-            ExpandAllCommand = new RelayCommand(() => ExpandAll(Nodes.First(), true));
-            ContractAllCommand = new RelayCommand(() => ExpandAll(Nodes.First(), false));
+            ExpandAllCommand = new RelayCommand(() => ExpandAllNodes(Nodes.First(), true));
+            ContractAllCommand = new RelayCommand(() => ExpandAllNodes(Nodes.First(), false));
             MessengerInstance.Register<DumpMessage>(this, OnDump);
             MessengerInstance.Register<ShowNodeDetailsMessage>(this, (message) => SelectedItemChanged(new NodeTreeItem(message.Node)));
-        }
-
-        private void ExpandAll(NodeTreeItem node, bool expand)
-        {
-            node.IsExpanded = expand;
-
-            foreach (var nodeTreeItem in node.Children)
-            {
-                ExpandAll(nodeTreeItem, expand);
-            }
         }
 
         public NodeTreeItem SelectedNode { get; set; }
@@ -55,7 +43,7 @@ namespace Testura.Android.PageObjectCreator.ViewModels
 
         private void OnDump(DumpMessage message)
         {
-            Nodes = new ObservableCollection<NodeTreeItem> { new NodeTreeItem(message.Node) };
+            Nodes = new ObservableCollection<NodeTreeItem> { new NodeTreeItem(message.TopNode) };
         }
 
         private void SelectedItemChanged(NodeTreeItem selectNode)
@@ -74,7 +62,17 @@ namespace Testura.Android.PageObjectCreator.ViewModels
             }
 
             SelectedNode.IsSelected = true;
-            ExpandAll(Nodes.First(), true);
+            ExpandAllNodes(Nodes.First(), true);
+        }
+
+        private void ExpandAllNodes(NodeTreeItem node, bool expand)
+        {
+            node.IsExpanded = expand;
+
+            foreach (var nodeTreeItem in node.Children)
+            {
+                ExpandAllNodes(nodeTreeItem, expand);
+            }
         }
 
         private NodeTreeItem FindNode(NodeTreeItem node, Node wantedNode)

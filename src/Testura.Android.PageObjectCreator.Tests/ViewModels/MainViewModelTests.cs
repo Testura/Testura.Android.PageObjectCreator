@@ -8,14 +8,14 @@ namespace Testura.Android.PageObjectCreator.Tests.ViewModels
     [TestFixture]
     public class MainViewModelTests
     {
-        private Mock<IDialogService> dialogServiceMock;
-        private MainViewModel mainViewModel;
+        private Mock<IDialogService> _dialogServiceMock;
+        private MainViewModel _mainViewModel;
 
         [SetUp]
         public void SetUp()
         {
-            dialogServiceMock = new Mock<IDialogService>();
-            mainViewModel = new MainViewModel(dialogServiceMock.Object);
+            _dialogServiceMock = new Mock<IDialogService>();
+            _mainViewModel = new MainViewModel(_dialogServiceMock.Object);
         }
     }
 }
