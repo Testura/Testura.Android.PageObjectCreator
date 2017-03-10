@@ -62,11 +62,10 @@ namespace Testura.Android.PageObjectCreator.Tests.Services
             var parentNode = new Node(new XElement("node", new XAttribute("class", "myClass"), new XAttribute("package", "package")), null);
             var mainNode = new Node(new XElement("node", new XAttribute("class", "myClass"), new XAttribute("resource-id", "myResourceId")), parentNode);
             
-
             var pageObjectInfo = new UiObjectInfo
             {
                 Name = "myObject",
-                Node = new Node(new XElement("node", new XAttribute("class", "myClass"), new XAttribute("resource-id", "myResourceId")), null),
+                Node = mainNode,
                 Optimal = new OptimalWith
                 {
                     Node = mainNode,
@@ -87,7 +86,7 @@ namespace Testura.Android.PageObjectCreator.Tests.Services
             };
 
             var code = _codeService.GeneratePageObject("test", "test", new List<UiObjectInfo> { pageObjectInfo });
-            Assert.IsTrue(code.Contains("CreateUiObject(With.Class(\"myClass\"), With.ResourceId(\"myResourceId\"));"));
+            Assert.IsTrue(code.Contains("n => n.Parent?.Package == \"package\" && n.Class == \"myClass\" && n.ResourceId == \"myResourceId\""));
         }
 
         [Test]
@@ -130,7 +129,7 @@ namespace Testura.Android.PageObjectCreator.Tests.Services
             };
 
             var code = _codeService.GeneratePageObject("test", "test", new List<UiObjectInfo> { pageObjectInfo });
-            Assert.IsTrue(code.Contains("CreateUiObject(With.Class(\"myClass\"), With.ResourceId(\"myResourceId\"));"));
+            Assert.IsTrue(code.Contains("n.Parent?.Parent?.Class == \"oldi\""));
         }
     }
 }
