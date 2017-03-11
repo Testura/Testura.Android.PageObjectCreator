@@ -5,6 +5,7 @@ Testura.Android.PageObjectCreator is a tool to:
 - Dump the UI hierarchy
 - Inspect all nodes inside the UI both visually and through a simple hierarchy tree view 
 - Select nodes and decide how we should grab them in our framework later (by using text, id, class, etc) 
+- Automatically find unique node attributes
 - Generate code for the page object (will generate class, constructor and all required fields). 
 - See the activity and package name for a view/application
 
