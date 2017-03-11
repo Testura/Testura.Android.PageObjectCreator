@@ -45,5 +45,11 @@ namespace Testura.Android.PageObjectCreator.Services
            var dialog = new AboutDialog();
             dialog.ShowDialog();
         }
+
+        public bool ShowClearUiObjectsDialog()
+        {
+            var dialog = new ClearDialog();
+            return dialog.ShowDialog().Value;
+        }
     }
 }

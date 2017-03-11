@@ -14,13 +14,13 @@ namespace Testura.Android.PageObjectCreator.ViewModels
     [ImplementPropertyChanged]
     public class WithViewModel
     {
-        private readonly IAutoSelectedWithFinderService _autoSelectedWithFinderService;
+        private readonly IUniqueWithFinderService _uniqueWithFinderService;
         private IList<Node> _allNodes;
 
-        public WithViewModel(IAutoSelectedWithFinderService autoSelectedWithFinderService)
+        public WithViewModel(IUniqueWithFinderService uniqueWithFinderService)
         {
             _allNodes = new List<Node>();
-            _autoSelectedWithFinderService = autoSelectedWithFinderService;
+            _uniqueWithFinderService = uniqueWithFinderService;
             NotUsedWiths = new ObservableCollection<AttributeTags>();
             UsedWiths = new ObservableCollection<AttributeTags>();
             AddCommand = new RelayCommand<AttributeTags>(AddWith);
@@ -131,7 +131,7 @@ namespace Testura.Android.PageObjectCreator.ViewModels
 
             if (UseUniqueWiths)
             {
-                UiObjectInfo.AutoSelectedWith = _autoSelectedWithFinderService.GetUniqueWiths(UiObjectInfo.Node, _allNodes);
+                UiObjectInfo.AutoSelectedWith = _uniqueWithFinderService.GetUniqueWiths(UiObjectInfo.Node, _allNodes);
             }
             else
             {

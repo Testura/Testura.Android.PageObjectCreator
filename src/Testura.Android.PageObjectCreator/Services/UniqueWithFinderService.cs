@@ -8,7 +8,7 @@ using Testura.Android.Util;
 
 namespace Testura.Android.PageObjectCreator.Services
 {
-    public class UniqueWithFinderService : IAutoSelectedWithFinderService
+    public class UniqueWithFinderService : IUniqueWithFinderService
     {
         private readonly IList<AttributeTags> _attributesPriority;
 
@@ -43,7 +43,7 @@ namespace Testura.Android.PageObjectCreator.Services
 
                 if (CheckAttribute(selectedNode, properties, allNode))
                 {
-                    return new AutoSelectedWith { Withs = new List<AttributeTags>(combination) };
+                    return new AutoSelectedWith { Withs = new List<AttributeTags>(combination), Node = selectedNode };
                 }
             }
 

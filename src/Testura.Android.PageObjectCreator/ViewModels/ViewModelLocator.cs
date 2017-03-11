@@ -34,7 +34,7 @@ namespace Testura.Android.PageObjectCreator.ViewModels
             SimpleIoc.Default.Register<IFileService, FileService>();
             SimpleIoc.Default.Register<IScreenService, ScreenService>();
             SimpleIoc.Default.Register<ICodeService, CodeService>();
-            SimpleIoc.Default.Register<IAutoSelectedWithFinderService, UniqueWithFinderService>();
+            SimpleIoc.Default.Register<IUniqueWithFinderService, UniqueWithFinderService>();
         }
 
         public MainViewModel MainViewModel => ServiceLocator.Current.GetInstance<MainViewModel>();

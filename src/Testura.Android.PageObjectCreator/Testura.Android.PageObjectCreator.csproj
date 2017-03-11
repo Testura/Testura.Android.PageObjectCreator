@@ -138,6 +138,9 @@
     <Compile Include="Dialogs\AboutDialog.xaml.cs">
       <DependentUpon>AboutDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\ClearDialog.xaml.cs">
+      <DependentUpon>ClearDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\ErrorDialog.xaml.cs">
       <DependentUpon>ErrorDialog.xaml</DependentUpon>
     </Compile>
@@ -177,7 +180,7 @@
     <Compile Include="Services\IDeviceService.cs" />
     <Compile Include="Services\IDumpService.cs" />
     <Compile Include="Services\IFileService.cs" />
-    <Compile Include="Services\IAutoSelectedWithFinderService.cs" />
+    <Compile Include="Services\IUniqueWithFinderService.cs" />
     <Compile Include="Services\IScreenService.cs" />
     <Compile Include="Services\UniqueWithFinderService.cs" />
     <Compile Include="Services\ScreenService.cs" />
@@ -216,6 +219,10 @@
       <DependentUpon>HierarchyView.xaml</DependentUpon>
     </Compile>
     <Page Include="Dialogs\AboutDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\ClearDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

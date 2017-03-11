@@ -18,14 +18,14 @@ namespace Testura.Android.PageObjectCreator.ViewModels
     {
         private readonly IScreenService _screenService;
         private readonly IDialogService _dialogService;
-        private readonly IAutoSelectedWithFinderService _autoSelectedWithFinderService;
+        private readonly IUniqueWithFinderService _uniqueWithFinderService;
         private Node _topNode;
 
-        public ScreenViewModel(IScreenService screenService, IDialogService dialogService, IAutoSelectedWithFinderService autoSelectedWithFinderService)
+        public ScreenViewModel(IScreenService screenService, IDialogService dialogService, IUniqueWithFinderService uniqueWithFinderService)
         {
             _screenService = screenService;
             _dialogService = dialogService;
-            _autoSelectedWithFinderService = autoSelectedWithFinderService;
+            _uniqueWithFinderService = uniqueWithFinderService;
             ShouldShowInfoMessage = true;
             MessengerInstance.Register<DumpMessage>(this, OnNewDump);
             MessengerInstance.Register<StartedDumpScreenMessage>(this, OnStartedDumpingScreen);
@@ -77,7 +77,7 @@ namespace Testura.Android.PageObjectCreator.ViewModels
                     Name = name,
                     Node = node,
                     FindWith = new List<AttributeTags>(),
-                    AutoSelectedWith = _autoSelectedWithFinderService.GetUniqueWiths(node, _topNode.AllNodes()),
+                    AutoSelectedWith = _uniqueWithFinderService.GetUniqueWiths(node, _topNode.AllNodes()),
                     DisplayName = "Automatic"
                 };
                 MessengerInstance.Send(new AddUiObjectInfoMessage { UiNodeInfo = uiNodeInfo });

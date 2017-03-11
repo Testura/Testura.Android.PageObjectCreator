@@ -28,5 +28,11 @@ namespace Testura.Android.PageObjectCreator.Services
         /// Show the about dialog
         /// </summary>
         void ShowAboutDialog();
+
+        /// <summary>
+        /// Show the clear UiObjects dialog
+        /// </summary>
+        /// <returns></returns>
+        bool ShowClearUiObjectsDialog();
     }
 }

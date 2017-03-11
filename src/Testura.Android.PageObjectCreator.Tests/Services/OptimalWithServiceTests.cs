@@ -12,19 +12,19 @@ namespace Testura.Android.PageObjectCreator.Tests.Services
     [TestFixture]
     public class OptimalWithServiceTests
     {
-        private IAutoSelectedWithFinderService _autoSelectedWithFinderService;
+        private IUniqueWithFinderService _uniqueWithFinderService;
 
         [SetUp]
         public void SetUp()
         {
-            _autoSelectedWithFinderService = new UniqueWithFinderService();
+            _uniqueWithFinderService = new UniqueWithFinderService();
         }
 
         [Test]
         public void GetOptimalWith_WhenOnlyHavingOneNodeAndResourceId_ShouldGetResourceId()
         {
             var node = new Node(new XElement("node", new XAttribute("resource-id", "test")), null);
-            var withs = _autoSelectedWithFinderService.GetUniqueWiths(node, new List<Node>() { node });
+            var withs = _uniqueWithFinderService.GetUniqueWiths(node, new List<Node>() { node });
             Assert.AreEqual(1, withs.Withs.Count);
             Assert.AreEqual(AttributeTags.ResourceId, withs.Withs.First());
         }
@@ -33,7 +33,7 @@ namespace Testura.Android.PageObjectCreator.Tests.Services
         public void GetOptimalWith_WhenOnlyHavingOneNodeResourceIdIsEmpty_ShouldNotGetResourceId()
         {
             var node = new Node(new XElement("node", new XAttribute("resource-id", ""), new XAttribute("package", "test")), null);
-            var withs = _autoSelectedWithFinderService.GetUniqueWiths(node, new List<Node>() { node });
+            var withs = _uniqueWithFinderService.GetUniqueWiths(node, new List<Node>() { node });
             Assert.AreEqual(1, withs.Withs.Count);
             Assert.AreEqual(AttributeTags.Package, withs.Withs.First());
         }
@@ -43,7 +43,7 @@ namespace Testura.Android.PageObjectCreator.Tests.Services
         {
             var node = new Node(new XElement("node", new XAttribute("resource-id", "test"), new XAttribute("package", "test")), null);
             var secondNode = new Node(new XElement("node", new XAttribute("resource-id", "test")), null);
-            var withs = _autoSelectedWithFinderService.GetUniqueWiths(node, new List<Node>() { node, secondNode });
+            var withs = _uniqueWithFinderService.GetUniqueWiths(node, new List<Node>() { node, secondNode });
             Assert.AreEqual(1, withs.Withs.Count);
             Assert.AreEqual(AttributeTags.Package, withs.Withs.First());
         }
@@ -54,7 +54,7 @@ namespace Testura.Android.PageObjectCreator.Tests.Services
             var node = new Node(new XElement("node", new XAttribute("resource-id", "test"), new XAttribute("package", "test")), null);
             var secondNode = new Node(new XElement("node", new XAttribute("resource-id", "test")), null);
             var thirdNode = new Node(new XElement("node", new XAttribute("package", "test")), null);
-            var withs = _autoSelectedWithFinderService.GetUniqueWiths(node, new List<Node>() { node, secondNode, thirdNode });
+            var withs = _uniqueWithFinderService.GetUniqueWiths(node, new List<Node>() { node, secondNode, thirdNode });
             Assert.AreEqual(2, withs.Withs.Count);
             Assert.AreEqual(AttributeTags.ResourceId, withs.Withs.First());
             Assert.AreEqual(AttributeTags.Package, withs.Withs.Last());
@@ -68,7 +68,7 @@ namespace Testura.Android.PageObjectCreator.Tests.Services
             parent.Children.Add(node);
             var secondNode = new Node(new XElement("node", new XAttribute("package", "test"), new XAttribute("resource-id", "test")), null);
             var thirdNode = new Node(new XElement("node", new XAttribute("resource-id", "test"), new XAttribute("package", "test")), null);
-            var withs = _autoSelectedWithFinderService.GetUniqueWiths(node, new List<Node>() { node, secondNode, thirdNode, parent });
+            var withs = _uniqueWithFinderService.GetUniqueWiths(node, new List<Node>() { node, secondNode, thirdNode, parent });
             Assert.AreEqual(1, withs.Withs.Count);
             Assert.IsNotNull(withs.Parent);
             Assert.AreEqual(AttributeTags.ResourceId, withs.Withs.First());
@@ -84,7 +84,7 @@ namespace Testura.Android.PageObjectCreator.Tests.Services
             parent.Children.Add(otherChildNode);
             var secondNode = new Node(new XElement("node", new XAttribute("package", "test"), new XAttribute("resource-id", "test")), null);
             var thirdNode = new Node(new XElement("node", new XAttribute("resource-id", "test"), new XAttribute("package", "test")), null);
-            var withs = _autoSelectedWithFinderService.GetUniqueWiths(node, new List<Node>() { node, secondNode, thirdNode, parent, otherChildNode});
+            var withs = _uniqueWithFinderService.GetUniqueWiths(node, new List<Node>() { node, secondNode, thirdNode, parent, otherChildNode});
             Assert.AreEqual(1, withs.Withs.Count);
             Assert.IsNotNull(withs.Parent);
             Assert.AreEqual(AttributeTags.Package, withs.Withs.First());
