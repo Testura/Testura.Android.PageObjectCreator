@@ -1,4 +1,6 @@
-﻿using Testura.Android.PageObjectCreator.Dialogs;
+﻿using System.Collections.Generic;
+using Testura.Android.Device.Ui.Nodes.Data;
+using Testura.Android.PageObjectCreator.Dialogs;
 using Testura.Android.PageObjectCreator.Models;
 
 namespace Testura.Android.PageObjectCreator.Services
@@ -19,9 +21,9 @@ namespace Testura.Android.PageObjectCreator.Services
         /// Show the edit with dialog
         /// </summary>
         /// <param name="uiObjectInfo">UiObjected to edit withs for</param>
-        public void ShowWithDialog(UiObjectInfo uiObjectInfo)
+        public void ShowWithDialog(UiObjectInfo uiObjectInfo, IList<Node> nodes)
         {
-            var dialog = new WithDialog(uiObjectInfo);
+            var dialog = new WithDialog(uiObjectInfo, nodes);
             dialog.ShowDialog();
         }
 
@@ -42,6 +44,12 @@ namespace Testura.Android.PageObjectCreator.Services
         {
            var dialog = new AboutDialog();
             dialog.ShowDialog();
+        }
+
+        public bool ShowClearUiObjectsDialog()
+        {
+            var dialog = new ClearDialog();
+            return dialog.ShowDialog().Value;
         }
     }
 }

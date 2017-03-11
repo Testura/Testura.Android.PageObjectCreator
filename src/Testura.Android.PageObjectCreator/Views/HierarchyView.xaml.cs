@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace Testura.Android.PageObjectCreator.Views
 {
@@ -10,6 +11,16 @@ namespace Testura.Android.PageObjectCreator.Views
         public HierarchyView()
         {
             InitializeComponent();
+        }
+
+        private void TreeViewSelectedItemChanged(object sender, RoutedEventArgs e)
+        {
+            TreeViewItem item = sender as TreeViewItem;
+            if (item != null)
+            {
+                item.BringIntoView();
+                e.Handled = true;
+            }
         }
     }
 }

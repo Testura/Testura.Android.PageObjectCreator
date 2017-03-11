@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26127.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testura.Android.PageObjectCreator", "src\Testura.Android.PageObjectCreator\Testura.Android.PageObjectCreator.csproj", "{1B800835-5BE3-485E-A622-4D8225C8DD9E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testura.Android.PageObjectCreator.Tests", "src\Testura.Android.PageObjectCreator.Tests\Testura.Android.PageObjectCreator.Tests.csproj", "{9D8231F0-73FE-4610-B4AB-A642D9AAA5AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{1B800835-5BE3-485E-A622-4D8225C8DD9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B800835-5BE3-485E-A622-4D8225C8DD9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B800835-5BE3-485E-A622-4D8225C8DD9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D8231F0-73FE-4610-B4AB-A642D9AAA5AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D8231F0-73FE-4610-B4AB-A642D9AAA5AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D8231F0-73FE-4610-B4AB-A642D9AAA5AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D8231F0-73FE-4610-B4AB-A642D9AAA5AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

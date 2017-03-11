@@ -73,7 +73,7 @@
         </Grid>
         <StackPanel
                     Grid.Row="4">
-            <Label Content="Current elements"
+            <Label Content="UiObjects"
                    Foreground="White"
                    Background="{StaticResource WindowTitleColorBrush}"
                    Margin="10, 10, 10, 10" />
@@ -101,7 +101,7 @@
                                         Width="*"
                                         />
                     <DataGridTextColumn Header="Select with"
-                                        Binding="{Binding FindWithString}"
+                                        Binding="{Binding DisplayName}"
                                         Width="*"
                                         IsReadOnly="True"/>
                     <DataGridTemplateColumn Width="120">

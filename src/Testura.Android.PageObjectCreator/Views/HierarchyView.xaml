@@ -126,7 +126,7 @@
                Grid.Column="0" />
         <TreeView ItemsSource="{Binding DataContext.Nodes, ElementName=root}" Grid.Row="2" Margin="10, 0, 0, 0" x:Name="Nodes">
             <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type data:Node}" ItemsSource="{Binding Children}">
+                <HierarchicalDataTemplate DataType="{x:Type models:NodeTreeItem}" ItemsSource="{Binding Children}">
                     <TextBlock Text="{Binding Converter={StaticResource NodeToHierarchyTextConverter}}" />
                 </HierarchicalDataTemplate>
             </TreeView.Resources>
@@ -137,8 +137,21 @@
             </i:Interaction.Triggers>
             <TreeView.ItemContainerStyle>
                 <Style TargetType="TreeViewItem">
-                    <Setter Property="IsExpanded" Value="{Binding DataContext.IsTreeExpanded, ElementName=root}"/>
-                </Style>
+                    <Setter Property="IsExpanded"
+                        Value="{Binding IsExpanded, Mode=TwoWay}" />
+                    <Setter Property="IsSelected"
+                        Value="{Binding IsSelected, Mode=TwoWay}" />
+                    <Setter Property="FontWeight"
+                        Value="Normal" />
+                    <EventSetter Event="Selected" Handler="TreeViewSelectedItemChanged" />
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected"
+                              Value="True">
+                            <Setter Property="FontWeight"
+                                    Value="Bold" />
+                        </Trigger>
+                    </Style.Triggers>
+                    </Style>
             </TreeView.ItemContainerStyle>
         </TreeView>
         <Label Content="Node details"

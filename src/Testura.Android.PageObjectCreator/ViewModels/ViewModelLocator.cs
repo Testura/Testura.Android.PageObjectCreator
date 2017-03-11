@@ -1,4 +1,5 @@
 using GalaSoft.MvvmLight.Ioc;
+using Microsoft.CodeAnalysis;
 using Microsoft.Practices.ServiceLocation;
 using Testura.Android.PageObjectCreator.Services;
 using Testura.Android.PageObjectCreator.Util;
@@ -32,6 +33,8 @@ namespace Testura.Android.PageObjectCreator.ViewModels
             SimpleIoc.Default.Register<IDialogService, DialogService>();
             SimpleIoc.Default.Register<IFileService, FileService>();
             SimpleIoc.Default.Register<IScreenService, ScreenService>();
+            SimpleIoc.Default.Register<ICodeService, CodeService>();
+            SimpleIoc.Default.Register<IUniqueWithFinderService, UniqueWithFinderService>();
         }
 
         public MainViewModel MainViewModel => ServiceLocator.Current.GetInstance<MainViewModel>();

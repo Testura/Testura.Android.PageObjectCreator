@@ -99,15 +99,7 @@ namespace Testura.Android.PageObjectCreator.Views
 
             var node = MarkNode();
 
-            if (e.RightButton == MouseButtonState.Pressed && node != null)
-            {
-                DeviceCanvas.Children.Remove(_lastSelectedNodeRectangle);
-                _lastSelectedNodeRectangle = null;
-                _viewModel.ShowNodeDetails(node);
-                return;
-            }
-
-            if (e.LeftButton == MouseButtonState.Pressed && node != null)
+            if (e.LeftButton == MouseButtonState.Pressed && Keyboard.IsKeyDown(Key.LeftCtrl) && node != null)
             {
                 var rec = _lastSelectedNodeRectangle;
                 _lastSelectedNodeRectangle = null;
@@ -120,6 +112,16 @@ namespace Testura.Android.PageObjectCreator.Views
                 {
                     DeviceCanvas.Children.Remove(rec);
                 }
+
+                return;
+            }
+
+            if ((e.LeftButton == MouseButtonState.Pressed || e.RightButton == MouseButtonState.Pressed) && node != null)
+            {
+                DeviceCanvas.Children.Remove(_lastSelectedNodeRectangle);
+                _lastSelectedNodeRectangle = null;
+                _viewModel.ShowNodeDetails(node);
+                return;
             }
         }
 

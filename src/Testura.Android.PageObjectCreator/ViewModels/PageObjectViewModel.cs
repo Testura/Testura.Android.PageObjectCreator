@@ -1,10 +1,13 @@
 ﻿using System.ComponentModel;
+using System.Linq;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using PropertyChanged;
+using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.PageObjectCreator.Models;
 using Testura.Android.PageObjectCreator.Models.Messages;
 using Testura.Android.PageObjectCreator.Services;
+using Testura.Android.PageObjectCreator.Util.Extensions;
 
 namespace Testura.Android.PageObjectCreator.ViewModels
 {
@@ -12,12 +15,14 @@ namespace Testura.Android.PageObjectCreator.ViewModels
     public class PageObjectViewModel : ViewModelBase
     {
         private readonly IDialogService _dialogService;
+        private Node _topNode;
 
         public PageObjectViewModel(IDialogService dialogService)
         {
             _dialogService = dialogService;
             MessengerInstance.Register<DumpMessage>(this, OnDump);
             MessengerInstance.Register<AddUiObjectInfoMessage>(this, OnAddUiObjectInfo);
+            MessengerInstance.Register<StartedDumpScreenMessage>(this, OnStartDumpScreen);
             EditWithsCommand = new RelayCommand<UiObjectInfo>(EditWiths);
             UiInfoChangedCommand = new RelayCommand(SendPageObjectChanged);
             DeleteUiObjectInfoCommand = new RelayCommand<UiObjectInfo>(DeleteUiObjectInfo);
@@ -43,11 +48,23 @@ namespace Testura.Android.PageObjectCreator.ViewModels
         {
             PageObject.Activity = message.DumpInfo.Activity;
             PageObject.Package = message.DumpInfo.Package;
+            _topNode = message.TopNode;
+        }
+
+        private void OnStartDumpScreen(StartedDumpScreenMessage obj)
+        {
+            if (PageObject.UiObjectInfos.Any())
+            {
+                if (_dialogService.ShowClearUiObjectsDialog())
+                {
+                    PageObject.UiObjectInfos.Clear();
+                }
+            }
         }
 
         private void EditWiths(UiObjectInfo obj)
         {
-            _dialogService.ShowWithDialog(obj);
+            _dialogService.ShowWithDialog(obj, _topNode.AllNodes());
             SendPageObjectChanged();
         }
 

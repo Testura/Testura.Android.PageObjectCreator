@@ -20,7 +20,7 @@
                Grid.Row="0"
                Grid.Column="0" />
         <Label Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Hover for information" Margin="24, 5, 5, 5" Foreground="White"
-               Background="{StaticResource WindowTitleColorBrush}" ToolTip="Left-click to add new UI object, Right-click to view node details (in hierarchy tab)">
+               Background="{StaticResource WindowTitleColorBrush}" ToolTip="Left-click to view node details (in hierarchy tab). Ctrl + Left-click to add UiObject">
             <Label.RenderTransform>
                 <RotateTransform Angle="90" />
             </Label.RenderTransform>

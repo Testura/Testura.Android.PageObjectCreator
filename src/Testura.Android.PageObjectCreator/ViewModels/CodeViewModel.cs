@@ -1,32 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using GalaSoft.MvvmLight;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+﻿using GalaSoft.MvvmLight;
 using PropertyChanged;
-using Testura.Android.Device;
-using Testura.Android.Device.Ui.Objects;
-using Testura.Android.PageObjectCreator.Models;
 using Testura.Android.PageObjectCreator.Models.Messages;
-using Testura.Android.Util;
-using Testura.Code;
-using Testura.Code.Builders;
-using Testura.Code.Generators.Class;
-using Testura.Code.Generators.Common;
-using Testura.Code.Generators.Common.Arguments.ArgumentTypes;
-using Testura.Code.Models;
-using Testura.Code.Models.References;
-using Testura.Code.Saver;
-using Testura.Code.Statements;
+using Testura.Android.PageObjectCreator.Services;
 
 namespace Testura.Android.PageObjectCreator.ViewModels
 {
     [ImplementPropertyChanged]
     public class CodeViewModel : ViewModelBase
     {
-        private const string DeviceName = "device";
+        private readonly ICodeService _codeService;
 
-        public CodeViewModel()
+        public CodeViewModel(ICodeService codeService)
         {
+            _codeService = codeService;
             Code = string.Empty;
             MessengerInstance.Register<PageObjectChangedMessage>(this, OnPageObjectChanged);
         }
@@ -35,73 +21,7 @@ namespace Testura.Android.PageObjectCreator.ViewModels
 
         private void OnPageObjectChanged(PageObjectChangedMessage message)
         {
-            var fields = new List<Field>();
-            var statements = new List<StatementSyntax>();
-
-            fields.Add(new Field(DeviceName, typeof(IAndroidDevice), new[] { Modifiers.Private }));
-            statements.Add(Statement.Declaration.Assign(new VariableReference("this", new MemberReference(DeviceName)), new VariableReference("device")));
-
-            foreach (var pageObjectUiNode in message.PageObject.UiObjectInfos)
-            {
-                GenerateUiObject(fields, statements, pageObjectUiNode);
-            }
-
-            var classBuilder = new ClassBuilder(message.PageObject.Name, message.PageObject.Namespace)
-                .WithUsings("Testura.Android.Device", "Testura.Android.Device.Ui.Objects", "Testura.Android.Device.Ui.Search")
-                .WithFields(fields.ToArray())
-                .WithConstructor(ConstructorGenerator.Create(message.PageObject.Name, BodyGenerator.Create(statements.ToArray()), modifiers: new[] { Modifiers.Public }, parameters: new List<Parameter> { new Parameter("device", typeof(IAndroidDevice)) }))
-                .Build();
-            Code = new CodeSaver().SaveCodeAsString(classBuilder);
-        }
-
-        private void GenerateUiObject(List<Field> fields, List<StatementSyntax> statements, UiObjectInfo pageObjectUiNode)
-        {
-            fields.Add(new Field(pageObjectUiNode.Name, typeof(UiObject), new[] { Modifiers.Private }));
-            statements.Add(Statement.Declaration.Assign(pageObjectUiNode.Name, new VariableReference(DeviceName, new MemberReference("Ui", new MethodReference("CreateUiObject", GenerateWithArgument(pageObjectUiNode))))));
-        }
-
-        private IEnumerable<IArgument> GenerateWithArgument(UiObjectInfo uiObjectInfo)
-        {
-            var arguments = new List<IArgument>();
-
-            foreach (var with in uiObjectInfo.FindWith)
-            {
-                var value = GetNodeValue(uiObjectInfo, with);
-                ValueArgument valueArgument;
-                if (with == AttributeTags.Index)
-                {
-                    valueArgument = new ValueArgument(int.Parse(value));
-                }
-                else
-                {
-                    valueArgument = new ValueArgument(value);
-                }
-
-                arguments.Add(new ReferenceArgument(new VariableReference("With", new MethodReference(with.ToString(), new[] { valueArgument }))));
-            }
-
-            return arguments;
-        }
-
-        private string GetNodeValue(UiObjectInfo uiObjectInfo, AttributeTags with)
-        {
-            switch (with)
-            {
-                case AttributeTags.Text:
-                    return uiObjectInfo.Node.Text;
-                case AttributeTags.ResourceId:
-                    return uiObjectInfo.Node.ResourceId;
-                case AttributeTags.ContentDesc:
-                    return uiObjectInfo.Node.ContentDesc;
-                case AttributeTags.Class:
-                    return uiObjectInfo.Node.Class;
-                case AttributeTags.Package:
-                    return uiObjectInfo.Node.Package;
-                case AttributeTags.Index:
-                    return uiObjectInfo.Node.Index;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(with), with, null);
-            }
+            Code = _codeService.GeneratePageObject(message.PageObject.Name, message.PageObject.Namespace, message.PageObject.UiObjectInfos);
         }
     }
 }

@@ -1,43 +1,39 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using PropertyChanged;
 using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.PageObjectCreator.Models;
 using Testura.Android.PageObjectCreator.Models.Messages;
-using Testura.Android.PageObjectCreator.Services;
+using Attribute = Testura.Android.PageObjectCreator.Models.Attribute;
 
 namespace Testura.Android.PageObjectCreator.ViewModels
 {
     [ImplementPropertyChanged]
     public class HierarchyViewModel : ViewModelBase
     {
-        private readonly IDumpService _dumpService;
-        private readonly IFileService _fileService;
-
-        public HierarchyViewModel(IDumpService dumpService, IFileService fileService)
+        public HierarchyViewModel()
         {
-            _dumpService = dumpService;
-            _fileService = fileService;
-            Nodes = new ObservableCollection<Node>();
+            Nodes = new ObservableCollection<NodeTreeItem>();
             Attributes = new ObservableCollection<Attribute>();
-            SelectedItemChangedCommand = new RelayCommand<Node>(SelectedItemChanged);
+            SelectedItemChangedCommand = new RelayCommand<NodeTreeItem>(SelectedItemChanged);
             AddCommand = new RelayCommand(AddNode, CanAddNode);
-            ExpandAllCommand = new RelayCommand(() => IsTreeExpanded = true);
-            ContractAllCommand = new RelayCommand(() => IsTreeExpanded = false);
+            ExpandAllCommand = new RelayCommand(() => ExpandAllNodes(Nodes.First(), true));
+            ContractAllCommand = new RelayCommand(() => ExpandAllNodes(Nodes.First(), false));
             MessengerInstance.Register<DumpMessage>(this, OnDump);
-            MessengerInstance.Register<ShowNodeDetailsMessage>(this, (message) => SelectedItemChanged(message.Node));
+            MessengerInstance.Register<ShowNodeDetailsMessage>(this, (message) => SelectedItemChanged(new NodeTreeItem(message.Node)));
         }
 
-        public Node SelectedNode { get; set; }
+        public NodeTreeItem SelectedNode { get; set; }
 
         public bool IsTreeExpanded { get; set; }
 
-        public ObservableCollection<Node> Nodes { get; set; }
+        public ObservableCollection<NodeTreeItem> Nodes { get; set; }
 
         public ObservableCollection<Attribute> Attributes { get; set; }
 
-        public RelayCommand<Node> SelectedItemChangedCommand { get; set; }
+        public RelayCommand<NodeTreeItem> SelectedItemChangedCommand { get; set; }
 
         public RelayCommand AddCommand { get; set; }
 
@@ -47,25 +43,60 @@ namespace Testura.Android.PageObjectCreator.ViewModels
 
         private void OnDump(DumpMessage message)
         {
-            var lines = _fileService.ReadAllLinesFromFile(message.DumpInfo.DumpPath);
-            var node = _dumpService.ParseDumpAsTree(string.Join(string.Empty, lines));
-            Nodes = new ObservableCollection<Node> { node };
+            Nodes = new ObservableCollection<NodeTreeItem> { new NodeTreeItem(message.TopNode) };
         }
 
-        private void SelectedItemChanged(Node selectNode)
+        private void SelectedItemChanged(NodeTreeItem selectNode)
         {
-            SelectedNode = selectNode;
-            MessengerInstance.Send(new SelectedHierarchyNodeMesssage { SelectedNode = selectNode });
+            if (selectNode == null)
+            {
+                return;
+            }
+
+            SelectedNode = FindNode(Nodes.First(), selectNode.Node);
+            MessengerInstance.Send(new SelectedHierarchyNodeMesssage { SelectedNode = SelectedNode.Node });
             Attributes.Clear();
-            foreach (var xAttribute in SelectedNode.Element.Attributes())
+            foreach (var xAttribute in SelectedNode.Node.Element.Attributes())
             {
                 Attributes.Add(new Attribute(xAttribute.Name.LocalName, xAttribute.Value));
             }
+
+            SelectedNode.IsSelected = true;
+            ExpandAllNodes(Nodes.First(), true);
+        }
+
+        private void ExpandAllNodes(NodeTreeItem node, bool expand)
+        {
+            node.IsExpanded = expand;
+
+            foreach (var nodeTreeItem in node.Children)
+            {
+                ExpandAllNodes(nodeTreeItem, expand);
+            }
+        }
+
+        private NodeTreeItem FindNode(NodeTreeItem node, Node wantedNode)
+        {
+            if (node.Node == wantedNode)
+            {
+                return node;
+            }
+
+            foreach (var nodeTreeItem in node.Children)
+            {
+                var foundNode = FindNode(nodeTreeItem, wantedNode);
+                if (foundNode != null)
+                {
+                    return foundNode;
+                }
+            }
+
+            return null;
         }
 
         private void AddNode()
         {
-            MessengerInstance.Send(new AddNodeMessage { Node = SelectedNode });
+            MessengerInstance.Send(new AddNodeMessage { Node = SelectedNode.Node });
         }
 
         private bool CanAddNode()

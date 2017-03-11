@@ -8,6 +8,7 @@ using Testura.Android.Device.Ui.Nodes.Data;
 using Testura.Android.PageObjectCreator.Models;
 using Testura.Android.PageObjectCreator.Models.Messages;
 using Testura.Android.PageObjectCreator.Services;
+using Testura.Android.PageObjectCreator.Util.Extensions;
 using Testura.Android.Util;
 
 namespace Testura.Android.PageObjectCreator.ViewModels
@@ -15,15 +16,16 @@ namespace Testura.Android.PageObjectCreator.ViewModels
     [ImplementPropertyChanged]
     public class ScreenViewModel : ViewModelBase
     {
-        private readonly IFileService _fileService;
         private readonly IScreenService _screenService;
         private readonly IDialogService _dialogService;
+        private readonly IUniqueWithFinderService _uniqueWithFinderService;
+        private Node _topNode;
 
-        public ScreenViewModel(IFileService fileService, IScreenService screenService, IDialogService dialogService)
+        public ScreenViewModel(IScreenService screenService, IDialogService dialogService, IUniqueWithFinderService uniqueWithFinderService)
         {
-            _fileService = fileService;
             _screenService = screenService;
             _dialogService = dialogService;
+            _uniqueWithFinderService = uniqueWithFinderService;
             ShouldShowInfoMessage = true;
             MessengerInstance.Register<DumpMessage>(this, OnNewDump);
             MessengerInstance.Register<StartedDumpScreenMessage>(this, OnStartedDumpingScreen);
@@ -47,8 +49,7 @@ namespace Testura.Android.PageObjectCreator.ViewModels
 
         public Node GetNodes(Point point, string dumpPath)
         {
-            var lines = _fileService.ReadAllLinesFromFile(dumpPath);
-            var nodes = _screenService.GetNodes(point, string.Join(string.Empty, lines));
+            var nodes = _screenService.GetNodes(point, _topNode.AllNodes());
             if (nodes.Any())
             {
                 var node = nodes.First();
@@ -75,7 +76,9 @@ namespace Testura.Android.PageObjectCreator.ViewModels
                 {
                     Name = name,
                     Node = node,
-                    FindWith = new List<AttributeTags>()
+                    FindWith = new List<AttributeTags>(),
+                    AutoSelectedWith = _uniqueWithFinderService.GetUniqueWiths(node, _topNode.AllNodes()),
+                    DisplayName = "Automatic"
                 };
                 MessengerInstance.Send(new AddUiObjectInfoMessage { UiNodeInfo = uiNodeInfo });
                 return true;
@@ -101,6 +104,7 @@ namespace Testura.Android.PageObjectCreator.ViewModels
         {
             IsDumpingScreen = false;
             LoadImage?.Invoke(this, message.DumpInfo);
+            _topNode = message.TopNode;
         }
 
         private void OnStartedDumpingScreen(StartedDumpScreenMessage message)
