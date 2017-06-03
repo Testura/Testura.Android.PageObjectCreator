@@ -111,6 +111,12 @@ namespace Testura.Android.PageObjectCreator.Services
         private string DumpScreen(string serial)
         {
             var savePath = Path.Combine(AssemblyDirectory, "dump.xml");
+            var files = _terminal.ExecuteCmdCommand("adb.exe", "-s", serial, "shell", "ls", "/sdcard/");
+            if (files.Contains("dump.xml"))
+            {
+                _terminal.ExecuteCmdCommand("adb.exe", "-s", serial, "shell", "rm", "/sdcard/dump.xml");
+            }
+
             _terminal.ExecuteCmdCommand("adb.exe", "-s", serial, "shell", "uiautomator", "dump", "/sdcard/dump.xml");
             _terminal.ExecuteCmdCommand("adb.exe", "-s", serial, "pull", "/sdcard/dump.xml", AssemblyDirectory);
             return savePath;

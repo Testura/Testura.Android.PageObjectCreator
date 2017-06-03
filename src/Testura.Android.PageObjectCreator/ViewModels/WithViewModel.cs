@@ -131,7 +131,7 @@ namespace Testura.Android.PageObjectCreator.ViewModels
 
             if (UseUniqueWiths)
             {
-                UiObjectInfo.AutoSelectedWith = _uniqueWithFinderService.GetUniqueWiths(UiObjectInfo.Node, _allNodes);
+                UiObjectInfo.AutoSelectedWith = _uniqueWithFinderService.GetUniqueWiths(UiObjectInfo.Node, _allNodes, false);
             }
             else
             {

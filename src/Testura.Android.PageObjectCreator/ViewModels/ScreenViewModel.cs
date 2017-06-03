@@ -77,7 +77,7 @@ namespace Testura.Android.PageObjectCreator.ViewModels
                     Name = name,
                     Node = node,
                     FindWith = new List<AttributeTags>(),
-                    AutoSelectedWith = _uniqueWithFinderService.GetUniqueWiths(node, _topNode.AllNodes()),
+                    AutoSelectedWith = _uniqueWithFinderService.GetUniqueWiths(node, _topNode.AllNodes(), false),
                     DisplayName = "Automatic"
                 };
                 MessengerInstance.Send(new AddUiObjectInfoMessage { UiNodeInfo = uiNodeInfo });
