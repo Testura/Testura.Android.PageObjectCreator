@@ -6,6 +6,6 @@ namespace Testura.Android.PageObjectCreator.Services
 {
     public interface IUniqueWithFinderService
     {
-        AutoSelectedWith GetUniqueWiths(Node selectedNode, IList<Node> allNode);
+        AutoSelectedWith GetUniqueWiths(Node selectedNode, IList<Node> allNode, bool allowTextAndIndex);
     }
 }

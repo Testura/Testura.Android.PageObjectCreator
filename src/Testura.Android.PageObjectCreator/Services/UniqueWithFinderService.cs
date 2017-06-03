@@ -24,13 +24,16 @@ namespace Testura.Android.PageObjectCreator.Services
             };
         }
 
-        public AutoSelectedWith GetUniqueWiths(Node selectedNode, IList<Node> allNode)
+        public AutoSelectedWith GetUniqueWiths(Node selectedNode, IList<Node> allNode, bool allowTextAndIndex)
         {
             var combinations = GetAllCombinations(_attributesPriority);
 
-            // We can not use only text or index.
-            combinations.Remove(combinations.FirstOrDefault(c => c.Count == 1 && c.First() == AttributeTags.Text));
-            combinations.Remove(combinations.FirstOrDefault(c => c.Count == 1 && c.First() == AttributeTags.Index));
+            if (!allowTextAndIndex)
+            {
+                // We can not use only text or index.
+                combinations.Remove(combinations.FirstOrDefault(c => c.Count == 1 && c.First() == AttributeTags.Text));
+                combinations.Remove(combinations.FirstOrDefault(c => c.Count == 1 && c.First() == AttributeTags.Index));
+            }
 
             foreach (var combination in combinations)
             {
@@ -49,8 +52,8 @@ namespace Testura.Android.PageObjectCreator.Services
 
             if (selectedNode.Parent != null)
             {
-                var uniqueParent = GetUniqueWiths(selectedNode.Parent, allNode);
-                var currentNodeUniqueWiths = GetUniqueWiths(selectedNode, selectedNode.Parent.Children);
+                var uniqueParent = GetUniqueWiths(selectedNode.Parent, allNode, true);
+                var currentNodeUniqueWiths = GetUniqueWiths(selectedNode, selectedNode.Parent.Children, true);
                 currentNodeUniqueWiths.Parent = uniqueParent;
                 return currentNodeUniqueWiths;
             }
