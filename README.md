@@ -9,7 +9,11 @@ Testura.Android.PageObjectCreator is a tool to:
 - Generate code for the page object (will generate class, constructor and all required fields). 
 - See the activity and package name for a view/application
 
+[A short introduction video here](https://www.youtube.com/watch?v=K3zxPAqrTOA)
+
 ![Testura Logo](http://www.testura.net/Content/Images/PageObject/Testura3.Png)
+
+
 
 # Install
 
