@@ -15,6 +15,7 @@ using Testura.Code.Generators.Common;
 using Testura.Code.Generators.Common.Arguments.ArgumentTypes;
 using Testura.Code.Generators.Common.BinaryExpressions;
 using Testura.Code.Models;
+using Testura.Code.Models.Properties;
 using Testura.Code.Models.References;
 using Testura.Code.Saver;
 using Testura.Code.Statements;
@@ -37,8 +38,9 @@ namespace Testura.Android.PageObjectCreator.Services
         /// <param name="pageObejctName">Name of the new page object</param>
         /// <param name="namespace">Name of the namespace to generate</param>
         /// <param name="uiObjects">UiObject inside the class</param>
+        /// <param name="useAttributes">If we should generate ui objects as attributes</param>
         /// <returns>The generated code as a string</returns>
-        public string GeneratePageObject(string pageObejctName, string @namespace, IEnumerable<UiObjectInfo> uiObjects)
+        public string GeneratePageObject(string pageObejctName, string @namespace, IEnumerable<UiObjectInfo> uiObjects, bool useAttributes)
         {
             var fields = new List<Field>();
             var statements = new List<StatementSyntax>();
@@ -48,7 +50,7 @@ namespace Testura.Android.PageObjectCreator.Services
 
             foreach (var pageObjectUiNode in uiObjects)
             {
-                var generatedUiObject = GenerateUiObject(pageObjectUiNode);
+                var generatedUiObject = GenerateUiObject(pageObjectUiNode, useAttributes);
                 fields.Add(generatedUiObject.field);
                 statements.Add(generatedUiObject.statement);
             }
@@ -65,7 +67,7 @@ namespace Testura.Android.PageObjectCreator.Services
             return _codeSaver.SaveCodeAsString(classBuilder);
         }
 
-        private(Field field, StatementSyntax statement) GenerateUiObject(UiObjectInfo pageObjectUiNode)
+        private(Field field, StatementSyntax statement) GenerateUiObject(UiObjectInfo pageObjectUiNode, bool useAttribute)
         {
             var field = new Field(pageObjectUiNode.Name, typeof(UiObject), new[] { Modifiers.Private });
             var statement = Statement.Declaration.Assign(

@@ -11,7 +11,8 @@ namespace Testura.Android.PageObjectCreator.Services
         /// <param name="pageObejctName">Name of the new page object</param>
         /// <param name="namespace">Name of the namespace to generate</param>
         /// <param name="uiObjects">UiObject inside the class</param>
+        /// <param name="useAttributes">If we should generate ui objects as attributes</param>
         /// <returns>The generated code as a string</returns>
-        string GeneratePageObject(string pageObejctName, string @namespace, IEnumerable<UiObjectInfo> uiObjects);
+        string GeneratePageObject(string pageObejctName, string @namespace, IEnumerable<UiObjectInfo> uiObjects, bool useAttributes);
     }
 }
