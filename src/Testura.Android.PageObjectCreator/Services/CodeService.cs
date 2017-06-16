@@ -18,6 +18,7 @@ using Testura.Code.Models;
 using Testura.Code.Models.References;
 using Testura.Code.Saver;
 using Testura.Code.Statements;
+using Attribute = Testura.Code.Models.Attribute;
 
 namespace Testura.Android.PageObjectCreator.Services
 {
@@ -37,8 +38,9 @@ namespace Testura.Android.PageObjectCreator.Services
         /// <param name="pageObejctName">Name of the new page object</param>
         /// <param name="namespace">Name of the namespace to generate</param>
         /// <param name="uiObjects">UiObject inside the class</param>
+        /// <param name="useAttributes">If we should generate ui objects as attributes</param>
         /// <returns>The generated code as a string</returns>
-        public string GeneratePageObject(string pageObejctName, string @namespace, IEnumerable<UiObjectInfo> uiObjects)
+        public string GeneratePageObject(string pageObejctName, string @namespace, IEnumerable<UiObjectInfo> uiObjects, bool useAttributes)
         {
             var fields = new List<Field>();
             var statements = new List<StatementSyntax>();
@@ -48,9 +50,12 @@ namespace Testura.Android.PageObjectCreator.Services
 
             foreach (var pageObjectUiNode in uiObjects)
             {
-                var generatedUiObject = GenerateUiObject(pageObjectUiNode);
+                var generatedUiObject = GenerateUiObject(pageObjectUiNode, useAttributes);
                 fields.Add(generatedUiObject.field);
-                statements.Add(generatedUiObject.statement);
+                if (generatedUiObject.statement != null)
+                {
+                    statements.Add(generatedUiObject.statement);
+                }
             }
 
             var classBuilder = new ClassBuilder(pageObejctName, @namespace)
@@ -65,13 +70,38 @@ namespace Testura.Android.PageObjectCreator.Services
             return _codeSaver.SaveCodeAsString(classBuilder);
         }
 
-        private(Field field, StatementSyntax statement) GenerateUiObject(UiObjectInfo pageObjectUiNode)
+        private(Field field, StatementSyntax statement) GenerateUiObject(UiObjectInfo pageObjectUiNode, bool useAttribute)
         {
-            var field = new Field(pageObjectUiNode.Name, typeof(UiObject), new[] { Modifiers.Private });
-            var statement = Statement.Declaration.Assign(
+            var attributes = new List<Attribute>();
+            StatementSyntax statement = null;
+
+            if (useAttribute && 
+                ((pageObjectUiNode.AutoSelectedWith != null && pageObjectUiNode.AutoSelectedWith.Withs.Count == 1) || pageObjectUiNode.FindWith.Count == 1))
+            {
+                attributes.Add(GenerateAttribute(pageObjectUiNode));
+            }
+            else
+            {
+                statement = Statement.Declaration.Assign(
                 pageObjectUiNode.Name,
                 new VariableReference(DeviceName, new MemberReference("Ui", new MethodReference("CreateUiObject", GenerateWithArgument(pageObjectUiNode)))));
+            }
+
+            var field = new Field(pageObjectUiNode.Name, typeof(UiObject), new[] { Modifiers.Private }, attributes);
             return (field, statement);
+        }
+
+        private Attribute GenerateAttribute(UiObjectInfo pageObjectUiNode)
+        {
+            var with = pageObjectUiNode.AutoSelectedWith?.Withs[0] ?? pageObjectUiNode.FindWith[0];
+            var name = Enum.GetName(typeof(AttributeTags), with);
+            var arguments = new List<IArgument>
+            {
+                new VariableArgument($"AttributeTags.{name}", "with"),
+                new ValueArgument(GetNodeValue(pageObjectUiNode.Node, with), StringType.Normal, "value")
+            };
+
+            return new Attribute("Create", arguments);
         }
 
         private IEnumerable<IArgument> GenerateWithArgument(UiObjectInfo uiObjectInfo)

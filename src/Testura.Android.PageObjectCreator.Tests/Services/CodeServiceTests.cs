@@ -20,6 +20,23 @@ namespace Testura.Android.PageObjectCreator.Tests.Services
         }
 
         [Test]
+        public void GeneratePageObject_WhenHavingUiObjectWithOneAttribueAndShouldGenerateWithAttributes_ShouldGenerateCorrectAssignStatement()
+        {
+            var pageObjectInfo = new UiObjectInfo
+            {
+                Name = "myObject",
+                Node = new Node(new XElement("node", new XAttribute("class", "myClass")), null),
+                FindWith = new List<AttributeTags>
+                {
+                    AttributeTags.Class,
+                }
+            };
+
+            var code = _codeService.GeneratePageObject("test", "test", new List<UiObjectInfo> { pageObjectInfo }, true);
+            Assert.IsTrue(code.Contains("[Create(with: AttributeTags.Class, value: \"myClass\")]"));
+        }
+
+        [Test]
         public void GeneratePageObject_WhenHavingUiObjectWithTwoAttributes_ShouldGenerateCorrectAssignStatement()
         {
             var pageObjectInfo = new UiObjectInfo
@@ -33,7 +50,7 @@ namespace Testura.Android.PageObjectCreator.Tests.Services
                 }
             };
 
-            var code = _codeService.GeneratePageObject("test", "test", new List<UiObjectInfo> {pageObjectInfo});
+            var code = _codeService.GeneratePageObject("test", "test", new List<UiObjectInfo> {pageObjectInfo}, false);
             Assert.IsTrue(code.Contains("CreateUiObject(With.Class(\"myClass\"), With.ResourceId(\"myResourceId\"));"));
         }
 
@@ -52,7 +69,7 @@ namespace Testura.Android.PageObjectCreator.Tests.Services
                 }
             };
 
-            var code = _codeService.GeneratePageObject("test", "test", new List<UiObjectInfo> { pageObjectInfo });
+            var code = _codeService.GeneratePageObject("test", "test", new List<UiObjectInfo> { pageObjectInfo }, false);
             Assert.IsTrue(code.Contains("CreateUiObject(With.Class(\"myClass\"), With.ResourceId(\"myResourceId\"));"));
         }
 
@@ -85,7 +102,7 @@ namespace Testura.Android.PageObjectCreator.Tests.Services
                 }
             };
 
-            var code = _codeService.GeneratePageObject("test", "test", new List<UiObjectInfo> { pageObjectInfo });
+            var code = _codeService.GeneratePageObject("test", "test", new List<UiObjectInfo> { pageObjectInfo }, false);
             Assert.IsTrue(code.Contains("n => n.Parent?.Package == \"package\" && n.Class == \"myClass\" && n.ResourceId == \"myResourceId\""));
         }
 
@@ -128,7 +145,7 @@ namespace Testura.Android.PageObjectCreator.Tests.Services
                 }
             };
 
-            var code = _codeService.GeneratePageObject("test", "test", new List<UiObjectInfo> { pageObjectInfo });
+            var code = _codeService.GeneratePageObject("test", "test", new List<UiObjectInfo> { pageObjectInfo }, false);
             Assert.IsTrue(code.Contains("n.Parent?.Parent?.Class == \"oldi\""));
         }
     }
