@@ -14,7 +14,7 @@
             <RowDefinition Height="50px"/>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <CheckBox Content="Use attributes (require Testura.Android.PageObject nuget package)"></CheckBox>
+        <CheckBox Content="Use attributes (require Testura.Android.PageObject nuget package)" Margin="20, 20, 10, 10" IsChecked="{Binding UseAttribute}" Command="{Binding UseAttributeCommand}"></CheckBox>
         <Border BorderBrush="#dddddd"
                 BorderThickness="1,1,1,1"
                 CornerRadius="8,8,8,8"

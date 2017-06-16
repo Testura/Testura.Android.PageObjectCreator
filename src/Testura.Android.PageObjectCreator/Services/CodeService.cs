@@ -75,7 +75,8 @@ namespace Testura.Android.PageObjectCreator.Services
             var attributes = new List<Attribute>();
             StatementSyntax statement = null;
 
-            if (useAttribute && pageObjectUiNode.FindWith.Count == 1)
+            if (useAttribute && 
+                ((pageObjectUiNode.AutoSelectedWith != null && pageObjectUiNode.AutoSelectedWith.Withs.Count == 1) || pageObjectUiNode.FindWith.Count == 1))
             {
                 attributes.Add(GenerateAttribute(pageObjectUiNode));
             }
@@ -92,14 +93,15 @@ namespace Testura.Android.PageObjectCreator.Services
 
         private Attribute GenerateAttribute(UiObjectInfo pageObjectUiNode)
         {
-            var with = pageObjectUiNode.FindWith[0];
+            var with = pageObjectUiNode.AutoSelectedWith?.Withs[0] ?? pageObjectUiNode.FindWith[0];
             var name = Enum.GetName(typeof(AttributeTags), with);
-            return new Attribute("Create",
-                new List<IArgument>()
-                {
-                    new VariableArgument($"AttributeTags.{name}", "with"),
-                    new ValueArgument(GetNodeValue(pageObjectUiNode.Node, with), StringType.Normal, "value")
-                });
+            var arguments = new List<IArgument>
+            {
+                new VariableArgument($"AttributeTags.{name}", "with"),
+                new ValueArgument(GetNodeValue(pageObjectUiNode.Node, with), StringType.Normal, "value")
+            };
+
+            return new Attribute("Create", arguments);
         }
 
         private IEnumerable<IArgument> GenerateWithArgument(UiObjectInfo uiObjectInfo)
