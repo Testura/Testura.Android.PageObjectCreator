@@ -19,9 +19,11 @@ namespace Testura.Android.PageObjectCreator.ViewModels
 
         public string Code { get; set; }
 
+        public bool UseAttribute { get; set; }
+
         private void OnPageObjectChanged(PageObjectChangedMessage message)
         {
-            Code = _codeService.GeneratePageObject(message.PageObject.Name, message.PageObject.Namespace, message.PageObject.UiObjectInfos);
+            Code = _codeService.GeneratePageObject(message.PageObject.Name, message.PageObject.Namespace, message.PageObject.UiObjectInfos, UseAttribute);
         }
     }
 }
